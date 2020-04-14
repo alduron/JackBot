@@ -25,6 +25,7 @@ You can create a new server with [this tutorial](https://support.discordapp.com/
 Copy the server name for later, we'll need it as ```DiscordServerName```
 
 * Enter your server in Discord and select "Server Settings" from the drop down. You can do this from any account that has the Manage Server role.
+
 ![ServerSettings](https://user-images.githubusercontent.com/6700545/79265909-70a25800-7e5c-11ea-9dc1-622c0b5a545c.png)
 * Select Webhooks from the left hand navigation menu.
 * Select Create Webhook and fill out the details needed to proceed.
