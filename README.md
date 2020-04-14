@@ -64,8 +64,8 @@ The bot will remain in the channel but we're only using it to read messages. It'
 There are two more items you'll need to grab for the bot to work correctly
 
 * In the Discord app as the user with Manage Server role, select settings at the bottom.
-![DiscordSettings](https://user-images.githubusercontent.com/6700545/79265859-5f594b80-7e5c-11ea-9cdf-0d6d38bc8e86.png)
 
+![DiscordSettings](https://user-images.githubusercontent.com/6700545/79265859-5f594b80-7e5c-11ea-9cdf-0d6d38bc8e86.png)
 * Select Appearance from the left hand navigation menu and scroll down until you see Advanced. Turn on Developer Mode.
 
 ![DiscordDevMode](https://user-images.githubusercontent.com/6700545/79265845-59636a80-7e5c-11ea-88af-bd2d498b50bd.png)
