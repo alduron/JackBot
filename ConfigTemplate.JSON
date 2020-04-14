@@ -1,0 +1,14 @@
+{
+    "DiscordID":  "<YOUR DISCORD SERVER ID>",
+	"DiscordChannelName":"<THE CHANNEL THE BOT WILL STREAM TO>",
+	"DiscordServerName":"<THE SERVER THE BOT WILL STREAM TO>",
+    "DiscordTextChannelID":  "<YOUR DISCORD CHANNEL ID>",
+    "DiscordToken":  "<YOUR DISCORD BOT TOKEN>",
+    "DiscordURL":  "https://discordapp.com/api",
+    "DiscordHook":  "<YOUR DISCORD CHANNEL WEBHOOK",
+    "DiscordChannelMessages":  "{0}/channels/{1}/messages?after={2}",
+    "DiscordName":  "Discord",
+    "JackBoxName":  "The Jackbox Party Pack 4",
+    "DiscordLink":  "<PATH TO YOUR DISCORD EXECUTABLE (I use .lnk for various reasons)>",
+    "JackboxLink":  "<PATH TO YOUR JACKBOX EXECUTABLE (Steam uses a .url link, I just use that)>"
+}
