@@ -35,8 +35,7 @@ Create a new [Discord Account](https://discordapp.com/register) that the bot can
 
 ## Discord Server
 
-Create a new Discord server or use an existing one. The only requirement is that you have an account that has the ```Manage Server``` roll. This is required to add the bot later
-You can create a new server with [this tutorial](https://support.discordapp.com/hc/en-us/articles/204849977-How-do-I-create-a-server-).
+Create a new Discord server or use an existing one. The only requirement is that you have an account that has the ```Manage Server``` roll, this is required to add the bot later. You can create a new server with [this tutorial](https://support.discordapp.com/hc/en-us/articles/204849977-How-do-I-create-a-server-).
 
 Copy the server name for later, we'll need it as ```DiscordServerName```
 
@@ -71,7 +70,7 @@ The bot will remain in the channel but we're only using it to read messages. It'
 ![SelectReadMessages](https://user-images.githubusercontent.com/6700545/79265898-6b450d80-7e5c-11ea-99ee-3c81ad87173b.png)
 * Scroll back up to the ```Scopes``` section and copy the URL at the bottom of Scopes. It should read something like the following:
 ```https://discordapp.com/api/oauth2/authorize?client_id=<YOUR BOT ID>&permissions=<YOUR PERMISSION NUMBER>&scope=bot```
-* Paste the above link into the browser and grant the bot permissions to the Discord server we made earlier. You will need to be logged in with an account that has the Manage Server role to the Discord server you're trying to add the bot to.
+* Paste the above link into the browser and grant the bot permissions to the Discord server we made earlier. You will need to be logged in with an account that has the ```Manage Server``` role to the Discord server you're trying to add the bot to.
 
 ![AddBotToServer](https://user-images.githubusercontent.com/6700545/79265674-186b5600-7e5c-11ea-8b76-672cab33f673.png)
 
