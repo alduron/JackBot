@@ -7,11 +7,11 @@ A Discord bot for hosting JackBox Party Pack 4. This is not intended to be an of
 You'll need a number of things to get this bot working correctly
 
 * A Discord account that the bot will use to host the games
-..* A Discord server that you have Manage rights to so you can give the bot Read Message History permissions
-..* A Discord API Bot used to read text from channels
-..* OPTIONAL BUT RECOMMENDED: A secondary Steam account so the bot can run games without interfering with your personal account. You cannot run two games simultaneously
-..* A copy of Jackbox Party Pack 4, I run mine through Steam (other games can be used by adjusting keywords and timings)
-..* A Windows machine to host the games from
+* A Discord server that you have Manage rights to so you can give the bot Read Message History permissions
+* A Discord API Bot used to read text from channels
+* OPTIONAL BUT RECOMMENDED: A secondary Steam account so the bot can run games without interfering with your personal account. You cannot run two games simultaneously
+* A copy of Jackbox Party Pack 4, I run mine through Steam (other games can be used by adjusting keywords and timings)
+* A Windows machine to host the games from
 
 ## Discord Account
 
@@ -110,7 +110,7 @@ Example: ```C:\\Link\\To\\Folder\\Discord.lnk```
 10. Update the JackboxLink with the path to the JackBox executable. I placed a shortcut to the same folder in mine. Note that Windows paths need to be escaped in JSON. Steam uses url links to launch games, I suggest placing a shortcut in the same path and linking to that.
 Example: ```C:\\Link\\To\\Steam\\JackBox.url```
 
-[Keybind]: https://imgur.com/6Grscza "Discord Keybinds"
+[Keybind](https://imgur.com/6Grscza)
 [CopyChannelID]: https://imgur.com/K20WkqT "Copy Channel ID"
 [DeveloperMode]: https://imgur.com/ZhzAD1R "Turn on Dev Mode"
 [DiscordSettings]: https://imgur.com/1OgxpSN "User Settings"
