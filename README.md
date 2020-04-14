@@ -24,10 +24,10 @@ You can create a new server with [this tutorial](https://support.discordapp.com/
 
 Copy the server name for later, we'll need it as ```DiscordServerName```
 
-1. Enter your server in Discord and select "Server Settings" from the drop down.
+1. Enter your server in Discord and select "Server Settings" from the drop down. You can do this from any account that has the Manage Server role.
 ![ServerSettings](https://user-images.githubusercontent.com/6700545/79265909-70a25800-7e5c-11ea-9dc1-622c0b5a545c.png)
 2. Select Webhooks from the left hand navigation menu.
-3. Select Create Webhook.
+3. Select Create Webhook and fill out the details needed to proceed.
 ![WebHook](https://user-images.githubusercontent.com/6700545/79265934-7861fc80-7e5c-11ea-88e3-3b0f75bd2dfc.png)
 4. Give the Webhook bot a name, and icon if you wish. This is the primary name of the bot the users will see, so I named mine JackBot.
 5. Copy the Webhook URL at the bottom of the creation/edit page, we will need it later as ```DiscordHook```.
