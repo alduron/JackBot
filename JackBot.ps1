@@ -52,9 +52,15 @@ __**Be sure to wait until the last command has completed before issuing a new on
 #Sets relations in config file
 function Get-Config(){
     if(Test-Path "$($PSScriptRoot)\Config.JSON"){
-        $Content = Get-Content "$($PSScriptRoot)\Config.JSON" -Raw | ConvertFrom-Json
-        $Content.DiscordHook = $Content.DiscordHook -f $Content.DiscordURL
-        $Script:Config = $Content
+        #This was for a feature I removed. I'll find a differnt way to add it later
+        try{
+            $Script:Config  = Get-Content "$($PSScriptRoot)\Config.JSON" -Raw | ConvertFrom-Json
+        } catch {
+            Write-Error "There was a problem with the Config file. Please ensure it is proper JSON and retry"
+            Pause
+            exit
+        }
+        
     } else {
         Write-Error "Config.JSON is missing from the bot's root directory"
         Pause

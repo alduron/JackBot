@@ -47,7 +47,7 @@ Copy the server name for later, we'll need it as ```DiscordServerName```
 
 ![WebHook](https://user-images.githubusercontent.com/6700545/79265934-7861fc80-7e5c-11ea-88e3-3b0f75bd2dfc.png)
 * Give the Webhook bot a name, and icon if you wish. This is the primary name of the bot the users will see, so I named mine JackBot.
-* Copy the Webhook URL at the bottom of the creation/edit page, we will need it later as ```DiscordHook```.
+* Copy the ```Webhook URL``` at the bottom of the creation/edit page, we will need it later as ```DiscordHook```.
 
 ## Discord API Bot
 
@@ -62,13 +62,13 @@ The bot will remain in the channel but we're only using it to read messages. It'
 * Select ```Bot``` from the left hand navigation pane and copy the ```Token```, we'll need it later as ```DiscordToken```.
 
 ![BotToken](https://user-images.githubusercontent.com/6700545/79265794-42247d00-7e5c-11ea-9898-3b610079e0ab.png)
-* Select ```OAuth2``` from the left hand navigation pane and select ```bot``` from the Scopes section.
+* Select ```OAuth2``` from the left hand navigation pane and select ```bot``` from the ```Scopes``` section.
 
 ![BotToScopes](https://user-images.githubusercontent.com/6700545/79265810-48b2f480-7e5c-11ea-8f0e-80cc7187ad53.png)
 * Select the permissions for the bot, you need ```Read Message History``` at a minimum. You can add more here if you'd like to add functionality but I didn't need it.
 
 ![SelectReadMessages](https://user-images.githubusercontent.com/6700545/79265898-6b450d80-7e5c-11ea-99ee-3c81ad87173b.png)
-* Scroll back up to the ```Scopes``` section and copy the URL at the bottom of Scopes. It should read something like the following:
+* Scroll back up to the ```Scopes``` section and copy the URL at the bottom of ```Scopes```. It should read something like the following:
 ```https://discordapp.com/api/oauth2/authorize?client_id=<YOUR BOT ID>&permissions=<YOUR PERMISSION NUMBER>&scope=bot```
 * Paste the above link into the browser and grant the bot permissions to the Discord server we made earlier. You will need to be logged in with an account that has the ```Manage Server``` role to the Discord server you're trying to add the bot to.
 
