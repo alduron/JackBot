@@ -1,5 +1,5 @@
 {
-    "DiscordID":  "<YOUR DISCORD SERVER ID>",
+    "DiscordID":  "<YOUR DISCORD BOT ID>",
     "DiscordChannelName":"<THE CHANNEL THE BOT WILL STREAM TO>",
     "DiscordServerName":"<THE SERVER THE BOT WILL STREAM TO>",
     "DiscordTextChannelID":  "<YOUR DISCORD CHANNEL ID>",
