@@ -1,7 +1,7 @@
 {
     "DiscordID":  "<YOUR DISCORD SERVER ID>",
-	"DiscordChannelName":"<THE CHANNEL THE BOT WILL STREAM TO>",
-	"DiscordServerName":"<THE SERVER THE BOT WILL STREAM TO>",
+    "DiscordChannelName":"<THE CHANNEL THE BOT WILL STREAM TO>",
+    "DiscordServerName":"<THE SERVER THE BOT WILL STREAM TO>",
     "DiscordTextChannelID":  "<YOUR DISCORD CHANNEL ID>",
     "DiscordToken":  "<YOUR DISCORD BOT TOKEN>",
     "DiscordURL":  "https://discordapp.com/api",
