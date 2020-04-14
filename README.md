@@ -110,7 +110,8 @@ Example: ```C:\\Link\\To\\Folder\\Discord.lnk```
 10. Update the JackboxLink with the path to the JackBox executable. I placed a shortcut to the same folder in mine. Note that Windows paths need to be escaped in JSON. Steam uses url links to launch games, I suggest placing a shortcut in the same path and linking to that.
 Example: ```C:\\Link\\To\\Steam\\JackBox.url```
 
-![Keybind](https://imgur.com/6Grscza)
+![AddBotToServer](https://user-images.githubusercontent.com/6700545/79265674-186b5600-7e5c-11ea-8b76-672cab33f673.png)
+
 [CopyChannelID]: https://imgur.com/K20WkqT "Copy Channel ID"
 [DeveloperMode]: https://imgur.com/ZhzAD1R "Turn on Dev Mode"
 [DiscordSettings]: https://imgur.com/1OgxpSN "User Settings"
