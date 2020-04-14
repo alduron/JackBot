@@ -6,7 +6,7 @@ A Discord bot for hosting JackBox Party Pack 4. This is not intended to be an of
 
 You'll need a number of things to get this bot working correctly
 
-..* A Discord account that the bot will use to host the games
+* A Discord account that the bot will use to host the games
 ..* A Discord server that you have Manage rights to so you can give the bot Read Message History permissions
 ..* A Discord API Bot used to read text from channels
 ..* OPTIONAL BUT RECOMMENDED: A secondary Steam account so the bot can run games without interfering with your personal account. You cannot run two games simultaneously
