@@ -1,10 +1,10 @@
 # JackBot
 
-A Discord bot for hosting JackBox Party Pack 4. 
+A Discord bot for hosting all 6 of the Jackbox Party pack games
 
 ## Details
 
-This is not intended to be an official bot, this is just a project I threw together to help my family stay connected. There might be more sophisticated ways but this only took me 4-5 hours write.
+This is not intended to be an official bot, this is just a project I threw together to help my family stay connected. There might be more sophisticated ways but this was a fairly quick project
 
 ### What it is
 
@@ -12,11 +12,19 @@ JackBot is a hacky way to get a bot running and streaming games inside Discord. 
 
 ### How it works
 
-The premise is simple. Discord nor JackBox have native PowerShell integration so JackBot uses WScript to interact with the Windows and navigate around the apps. It has a limited state capacity to keep track of its position inside the app at all times.
+The premise is simple. Discord nor JackBox have native PowerShell integration so JackBot uses WScript to interact with the windows and navigate around the apps. It has a limited state capacity to keep track of its position inside the packs and apps at all times.
 
 ### Does this work with other games
 
-Technically it can work with any game that can be interacted with by keyboard commands. In its current form it only supports JackBox Party Pack 4 but all the other JackBox games could easily be supported. I don't own all of them or I would have added them. If there's enough interest I can look into the timings of the other games and add an app switcher fairly easily.
+Technically it can work with any game that can be interacted with by keyboard commands. In its current form it only supports the JackBox Party Pack games. A kind individual has provided me with the rest of the Jackbox games which have now been integrated into the bot!
+
+## New Features
+
+* **Command Locking** - Enable command locking either by config or within the bot to ensure the person launching the game has sole control over the bot for X minutes
+* **Dynamic Command List** - JackBot will now detect all games loaded and dynamically create the commands list for users. It supports any combination of Jackbox packs
+* **Configurable Splash Timings** - Exposed Splash Screen timings to the config file in the event that some machines load slower
+* **Configurable Bot Name** - You can now change the name that the bot uses to refer to itself
+* **Configurable Trigger Word** - You can now change the trigger word the bot listens to for commands
 
 ## Prereqs
 
@@ -26,7 +34,7 @@ You'll need a number of things to get this bot working correctly
 * A Discord server that you have Manage rights to so you can give the bot Read Message History permissions
 * A Discord API Bot used to read text from channels
 * OPTIONAL BUT RECOMMENDED: A secondary Steam account so the bot can run games without interfering with your personal account. You cannot run two games simultaneously
-* A copy of Jackbox Party Pack 4, I run mine through Steam (other games can be used by adjusting keywords and timings)
+* A copy of Jackbox Party Pack games, the bot supports **any combination** of Jackbot Party Pack games
 * A Windows machine to host the games from
 
 ## Discord Account
@@ -55,9 +63,6 @@ The bot will remain in the channel but we're only using it to read messages. It'
 
 * Create a new Application in the [Discord Development Portal](https://discordapp.com/developers/applications) and name it whatever you'd like.
 
-![Application](https://user-images.githubusercontent.com/6700545/79265735-2e791680-7e5c-11ea-8030-254533dfaf5e.png)
-* Copy the ```Client ID``` in the newly created application, we'll need it later as ```DiscordID```.
-
 ![BotID](https://user-images.githubusercontent.com/6700545/79265770-3afd6f00-7e5c-11ea-834b-f328dac406d8.png)
 * Select ```Bot``` from the left hand navigation pane and copy the ```Token```, we'll need it later as ```DiscordToken```.
 
@@ -74,9 +79,9 @@ The bot will remain in the channel but we're only using it to read messages. It'
 
 ![AddBotToServer](https://user-images.githubusercontent.com/6700545/79265674-186b5600-7e5c-11ea-8b76-672cab33f673.png)
 
-## Gathering the rest of the parameters
+## Discord Channel ID
 
-There are two more items you'll need to grab for the bot to work correctly
+The Channel ID can be retrieved in the UI by enabling Developer Options.
 
 * In the Discord app as the user with ```Manage Server``` role, select settings at the bottom.
 
@@ -90,9 +95,9 @@ There are two more items you'll need to grab for the bot to work correctly
 
 ## Windows Settings
 
-I'm running my bot on a Windows 10 VM on a spare machine I have in my house. The VM is running in VirtualBox as a service. It's important that whatever box you run the bot from is not running much of anything else. Definitely DO NOT run it on your normal-use machine.
+I'm running my bot on a Windows 10 VM on a spare machine I have in my house. The VM is running in VirtualBox as a service. It's important that whatever box you run the bot from is not running much of anything else. Definitely DO NOT run it on your normal-use machine. It will continuously grab your primary focus window.
 
-I won't go into setting up and running the VM, as that's outside the scope of the bot, but I'll give a few key details that need to be set if you're running inside a VM:
+I won't go into setting up and running the VM as that's outside the scope of the bot, but I'll give a few key details that need to be set if you're running inside a VM:
 
 * 3D hardware acceleration.
 * Access to Host audio.
@@ -105,6 +110,7 @@ No matter which machine you run it on, you need to ensure the following settings
 * Ensure Windows does not sleep
 * (PowerShell) Set-ExecutionPolicy to unrestricted
 * Disable the lock screen
+* OPTIONAL: I set all Jackbox games to run in windowed mode, I find this helps on CPU usage and it barely makes a difference to the end users
 
 You will need to install and log into the following items
 
@@ -121,21 +127,37 @@ Once all of the above items are in line you should be ready to configure and run
 
 1. Download the files and unpack them to wherever you'd like the bot to run from. I've added path agnostic bat files so the location should not matter.
 2. Once downloaded copy ```ConfigTemplate.JSON```, and rename it to ```Config.JSON```. 
-3. Update ```DiscordID``` with ```DiscordID``` we gathered earlier.
 Example: ```555555555555555555```
-4. Update ```DiscordChannelName``` with the name of the channel the bot will be streaming to.
+3. Update ```DiscordChannelName``` with the name of the channel the bot will be streaming to.
 Example: ```general```
-5. Update the ```DiscordServerName``` with the name of the Discord Server the bot will be streaming to.
+4. Update the ```DiscordServerName``` with the name of the Discord Server the bot will be streaming to.
 Example: ```GameHost```
-6. Update the ```DiscordTextChannelID``` with the ```DiscordTextChannelID``` we gathered earlier.
+5. Update the ```DiscordTextChannelID``` with the ```DiscordTextChannelID``` we gathered earlier.
 Example: ```555555555555555555```
-7. Update the ```DiscordToken``` with the ```DiscordToken``` we gathered earlier.
+6. Update the ```DiscordToken``` with the ```DiscordToken``` we gathered earlier.
 Example: ```LKAJSHDLJAS_lakjshdliASD_olkjbsdlkhjASDlkjasbdjhGLKJ.DHblkasjd```
-8. Update the ```DiscordHook``` with the ```DiscordHook``` we gathered earlier.
+7. Update the ```DiscordHook``` with the ```DiscordHook``` we gathered earlier.
 Example: ```https://discordapp.com/api/webhooks/555555555555555555/kljhasd098uasDPOIASD897asiudhkjhbasd0AS&d9*ASYdijbsad```
-9. Update the ```DiscordLink``` with the path to the Discord executable. I placed a shortcut to the same folder in mine. Note that Windows paths need to be escaped in JSON. Discord has an auto-update feature so I suggest placing a shortcut to the same path and linking to that.
-Example: ```C:\\Link\\To\\Folder\\Discord.lnk```
-10. Update the ```JackboxLink``` with the path to the JackBox executable. I placed a shortcut to the same folder in mine. Note that Windows paths need to be escaped in JSON. Steam uses url links to launch games, I suggest placing a shortcut in the same path and linking to that.
-Example: ```C:\\Link\\To\\Steam\\JackBox.url```
-11. Create a Windows Task to run ```JackBot.bat``` inside the bot folder.
-12. Double Click ```JackBot.bat``` to start the bot manually.
+8. Place the desktop link created by Steam (```The Jackbox Party Pack 4.url```) for each Jackbox game into the ```JackBot\links``` folder
+9. Place the shortcut to Discord (named ```Discord.lnk```) inside the ```JackBot\links``` folder
+9. Create a Windows Task to run ```JackBot.bat``` inside the bot folder.
+10. Double Click ```JackBot.bat``` to start the bot manually.
+
+**The bot will dynamically detect and build a menu off each game listed in the JackBot\Links**
+![AutoDetectGames](https://user-images.githubusercontent.com/6700545/79669977-30f1ae00-8185-11ea-9e3e-054ec7ce7d81.png)
+
+If you do not have links you can generate them from Steam by right clicking on the game and selecting ```Manage``` > ```Add desktop shortcut``` and moving that file to the \links folder.
+
+If you are upgrading the bot from the previous version **be sure to copy ```MessageCache.txt``` from the old bot file and move it to ```JackBot\src\MessageCache.txt```**. If you fail to do this your bot will process all the messages in the channel that the API returns. Alternatively you can right click the last message in your Discord channel, select ```Copy ID``` and paste it into ```MessageCache.txt```. There should only be one line inside ```MessageCache.txt``` and that line should always be the last message in the channel.
+
+### Configurable options in the config file
+
+Field Name | Description | Example
+--- | --- | ---
+BotName | The Display name of the bot, used for messages and the command list | ```JackBot```
+TriggerKey | The trigger word the bot responds to | ```!jackbot```
+CommandLockEnabled | Enable to use the Command Lock feature at startup | ```30```
+DiscordChannelName | The name of the channel the bot will stream to | ```general```
+DiscordServerName | The name of the server the bot will connect to | ```GameHost```
+DiscordLink | The windows path the bot will run Discord with | ```C:\\Path\\To\\Discord.lnk```
+AvailableGames\Link | The link that the bot will use to launch the corresponding Jackbox game | ```C:\\Path\\To\\Pack.url```

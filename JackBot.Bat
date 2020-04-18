@@ -1,3 +1,3 @@
 @echo off
-SET BotFile="%CD%\JackBot.ps1"
+SET BotFile="%~dp0\src\JackBot.ps1"
 powershell.exe -file %BotFile%

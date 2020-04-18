@@ -1,14 +1,114 @@
 {
-    "DiscordID":  "<YOUR DISCORD BOT ID>",
+    "BotName":"JackBot",
+    "TriggerKey":"!jackbot",
+    "CommandLockEnabled":false,
+    "LockMinutes":30,
     "DiscordChannelName":"<THE CHANNEL THE BOT WILL STREAM TO>",
     "DiscordServerName":"<THE SERVER THE BOT WILL STREAM TO>",
     "DiscordTextChannelID":  "<YOUR DISCORD CHANNEL ID>",
     "DiscordToken":  "<YOUR DISCORD BOT TOKEN>",
     "DiscordURL":  "https://discordapp.com/api",
-    "DiscordHook":  "<YOUR DISCORD CHANNEL WEBHOOK",
+    "DiscordHook":  "<YOUR DISCORD CHANNEL WEBHOOK>",
     "DiscordChannelMessages":  "{0}/channels/{1}/messages?after={2}",
     "DiscordName":  "Discord",
-    "JackBoxName":  "The Jackbox Party Pack 4",
-    "DiscordLink":  "<PATH TO YOUR DISCORD EXECUTABLE (I use .lnk for various reasons)>",
-    "JackboxLink":  "<PATH TO YOUR JACKBOX EXECUTABLE (Steam uses a .url link, I just use that)>"
+    "DiscordLink":  "Discord.lnk",
+    "AvailableGames":[
+        {
+            "GameID": 1,
+            "CommandName":"Pack1",
+            "IsPlayable":false,
+            "Name":"The Jackbox Party Pack",
+            "Link":"The Jackbox Party Pack.url",
+            "FullPath":"",
+            "SplashTime": 7,
+            "SubGames":{
+                "Jack1":"You Don't Know Jack 2015",
+                "Fib1":"Fibbage XL",
+		"Lie":"Lie Swatter",
+		"Spud":"Word Spud",
+                "Draw":"Drawful"
+            }
+        },
+        {
+            "GameID": 2,
+            "CommandName":"Pack2",
+            "IsPlayable":false,
+            "Name":"The Jackbox Party Pack 2",
+            "Link":"The Jackbox Party Pack 2.url",
+            "FullPath":"",
+            "SplashTime": 7,
+            "SubGames":{
+                "Fib2":"Fibbage 2",
+                "Wax":"Earwax",
+                "Bid":"Bidiots",
+                "Quip1":"Quiplash XL",
+                "Bomb":"Bomb Corp."
+            }
+        },
+        {
+            "GameID": 3,
+            "CommandName":"Pack3",
+            "IsPlayable":false,
+            "Name":"The Jackbox Party Pack 3",
+            "Link":"The Jackbox Party Pack 3.url",
+            "FullPath":"",
+            "SplashTime": 7,
+            "SubGames":{
+                "Quip2":"Quiplash 2",
+                "Murder1":"Trivia Murder Party",
+                "Guess":"Guesspionage",
+                "Fake":"Fakin' It",
+                "KO":"Tee K.O."
+            }
+        },
+        {
+            "GameID": 4,
+            "CommandName":"Pack4",
+            "IsPlayable":false,
+            "Name":"The Jackbox Party Pack 4",
+            "Link":"The Jackbox Party Pack 4.url",
+            "FullPath":"",
+            "SplashTime": 7,
+            "SubGames":{
+                "Fib3":"Fibbage 3",
+                "Fib3Alt":"Fibbage 3: Enough About You",
+                "Survive":"Survive The Internet",
+                "Monster":"Monster Seeking Monster",
+                "Bracket":"Bracketeering",
+                "Doodle":"Civic Doodle"
+            }
+        },
+        {
+            "GameID": 5,
+            "CommandName":"Pack5",
+            "IsPlayable":false,
+            "Name":"The Jackbox Party Pack 5",
+            "Link":"The Jackbox Party Pack 5.url",
+            "FullPath":"",
+            "SplashTime": 10,
+            "SubGames":{
+                "Jack2":"You Don't Know Jack",
+                "Split":"Split The Room",
+                "Mad":"Mad Verse City",
+                "Zeep":"Zeeple Dome",
+                "Stupid":"Patently Stupid"
+            }
+        },
+        {
+            "GameID": 6,
+            "CommandName":"Pack6",
+            "IsPlayable":false,
+            "Name":"The Jackbox Party Pack 6",
+            "Link":"The Jackbox Party Pack 6.url",
+            "FullPath":"",
+            "SplashTime": 10,
+            "SubGames":{
+                "Murder2":"Trivia Murder Party 2",
+                "Models":"Role Models",
+                "Boat":"Joke Boat",
+                "Dict":"Dictionarium",
+                "Button":"Push The Button"
+            }
+        }
+    ]
 }

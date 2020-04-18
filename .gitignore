@@ -1,0 +1,25 @@
+# Windows caches
+Thumbs.db
+ehthumbs.db
+# Folder Config
+Desktop.ini
+
+# Recycle
+$RECYCLE.BIN/
+
+# Windows Installer Files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
+links/*.lnk
+links/*.url
+
+# Thumbnails
+._*
+
+# Jackbot
+Config.JSON
