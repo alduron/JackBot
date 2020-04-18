@@ -143,12 +143,12 @@ Example: ```https://discordapp.com/api/webhooks/555555555555555555/kljhasd098uas
 9. Create a Windows Task to run ```JackBot.bat``` inside the bot folder.
 10. Double Click ```JackBot.bat``` to start the bot manually.
 
-**The bot will dynamically detect and build a menu off each game listed in the JackBot\Links**
+* **The bot will dynamically detect and build a menu off each game listed in the JackBot\Links**
 ![AutoDetectGames](https://user-images.githubusercontent.com/6700545/79669977-30f1ae00-8185-11ea-9e3e-054ec7ce7d81.png)
 
-If you do not have links you can generate them from Steam by right clicking on the game and selecting ```Manage``` > ```Add desktop shortcut``` and moving that file to the \links folder.
+* If you do not have links you can generate them from Steam by right clicking on the game and selecting ```Manage``` > ```Add desktop shortcut``` and moving that file to the \links folder.
 
-If you are upgrading the bot from the previous version **be sure to copy ```MessageCache.txt``` from the old bot file and move it to ```JackBot\src\MessageCache.txt```**. If you fail to do this your bot will process all the messages in the channel that the API returns. Alternatively you can right click the last message in your Discord channel, select ```Copy ID``` and paste it into ```MessageCache.txt```. There should only be one line inside ```MessageCache.txt``` and that line should always be the last message in the channel.
+* If you are upgrading the bot from the previous version **be sure to copy ```MessageCache.txt``` from the old bot file and move it to ```JackBot\src\MessageCache.txt```**. If you fail to do this your bot will process all the messages in the channel that the API returns. Alternatively you can right click the last message in your Discord channel, select ```Copy ID``` and paste it into ```MessageCache.txt```. There should only be one line inside ```MessageCache.txt``` and that line should always be the last message in the channel.
 
 ### Configurable options in the config file
 
