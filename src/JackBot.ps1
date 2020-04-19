@@ -356,6 +356,10 @@ function Resolve-MessageInstruction([PSCustomObject]$Messages){
                         Send-DiscordMessage -Message $($Script:HelperText)
                     }
                 }
+                # Optional Command Process confirmation
+                if($Script:Config.CommandProcessConfirmation){
+                    Send-DiscordMessage -Message "$($Message.author)'s task has completed"
+                }
             } else {
                 Send-DiscordMessage -Message "**$($Script:State.lockOwner)** has a command lock for another $(($Script:State.lockLease - (Get-Date)).Minutes) minute(s) and $(($Script:State.lockLease - (Get-Date)).Seconds) second(s)"
             }

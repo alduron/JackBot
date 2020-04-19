@@ -156,7 +156,9 @@ Field Name | Description | Example
 --- | --- | ---
 BotName | The Display name of the bot, used for messages and the command list | ```JackBot```
 TriggerKey | The trigger word the bot responds to | ```!jackbot```
-CommandLockEnabled | Enable to use the Command Lock feature at startup | ```30```
+CommandProcessConfirmation | Option to notify when each command has finished processing | ```true```
+CommandLockEnabled | Enable to use the Command Lock feature at startup | ```true```
+LockMinutes | The number of minutes a lock will be maintained for | ```30```
 DiscordChannelName | The name of the channel the bot will stream to | ```general```
 DiscordServerName | The name of the server the bot will connect to | ```GameHost```
 DiscordLink | The windows path the bot will run Discord with | ```C:\\Path\\To\\Discord.lnk```

@@ -1,6 +1,7 @@
 {
     "BotName":"JackBot",
     "TriggerKey":"!jackbot",
+    "CommandProcessConfirmation":false,
     "CommandLockEnabled":false,
     "LockMinutes":30,
     "DiscordChannelName":"<THE CHANNEL THE BOT WILL STREAM TO>",
