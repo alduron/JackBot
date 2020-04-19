@@ -219,6 +219,18 @@ function Resolve-MessageInstruction([PSCustomObject]$Messages){
                             Send-DiscordMessage -Message "You are already at the main menu, try `"$($Script:Config.TriggerKey) reset`" if you are experiencing issues"
                         }
                     }
+                    "sendback"{
+                        Invoke-UpOneGameLevel
+                    }
+                    "sendenter"{
+                        Invoke-KeyAtTarget -CMD "{ENTER}" -Target $Script:State.currentGameString
+                    }
+                    "sendup"{
+                        Invoke-KeyAtTarget -CMD "{UP}" -Target $Script:State.currentGameString
+                    }
+                    "senddown"{
+                        Invoke-KeyAtTarget -CMD "{DOWN}" -Target $Script:State.currentGameString
+                    }
                     "toggle"{
                         Send-DiscordMessage -Message "Toggling the Discord stream..."
                         Set-DiscordStreamToggle
@@ -253,104 +265,104 @@ function Resolve-MessageInstruction([PSCustomObject]$Messages){
                     }
                     #Pack 1
                     "jack1"{
-                        Invoke-GameSelect -MenuTarget 0 -CheckPack "pack1" -Wait 7 -Flavor "what do you know anyway?" -NoEnter
+                        Invoke-GameSelect -MenuTarget 0 -CheckPack "pack1" -Wait 8 -Flavor "what do you know anyway?" -NoEnter
                     }
                     "fib1"{
-                        Invoke-GameSelect -MenuTarget 1 -CheckPack "pack1" -Wait 7 -Flavor "going 'ol school." -NoEnter
+                        Invoke-GameSelect -MenuTarget 1 -CheckPack "pack1" -Wait 8 -Flavor "going 'ol school." -NoEnter
                     }
                     "lie"{
-                        Invoke-GameSelect -MenuTarget 2 -CheckPack "pack1" -Wait 7 -Flavor "liar liar pans on fire!" -NoEnter
+                        Invoke-GameSelect -MenuTarget 2 -CheckPack "pack1" -Wait 8 -Flavor "liar liar pans on fire!" -NoEnter
                     }
                     "spud"{
-                        Invoke-GameSelect -MenuTarget 3 -CheckPack "pack1" -Wait 7 -Flavor "don't be a dud!" -NoEnter
+                        Invoke-GameSelect -MenuTarget 3 -CheckPack "pack1" -Wait 8 -Flavor "don't be a dud!" -NoEnter
                     }
                     "draw"{
-                        Invoke-GameSelect -MenuTarget 4 -CheckPack "pack1" -Wait 7 -Flavor "i'll have to look away for this one." -NoEnter
+                        Invoke-GameSelect -MenuTarget 4 -CheckPack "pack1" -Wait 8 -Flavor "i'll have to look away for this one." -NoEnter
                     }
                     #Pack 2
                     "fib2"{
-                        Invoke-GameSelect -MenuTarget 0 -CheckPack "pack2" -Wait 7 -Flavor "can you spot the lies?" -NoEnter
+                        Invoke-GameSelect -MenuTarget 0 -CheckPack "pack2" -Wait 8 -Flavor "can you spot the lies?" -NoEnter
                     }
                     "wax"{
-                        Invoke-GameSelect -MenuTarget 1 -CheckPack "pack2" -Wait 7 -Flavor "can you hear that?" -NoEnter
+                        Invoke-GameSelect -MenuTarget 1 -CheckPack "pack2" -Wait 8 -Flavor "can you hear that?" -NoEnter
                     }
                     "bid"{
-                        Invoke-GameSelect -MenuTarget 2 -CheckPack "pack2" -Wait 7 -Flavor "collect this!" -NoEnter
+                        Invoke-GameSelect -MenuTarget 2 -CheckPack "pack2" -Wait 8 -Flavor "collect this!" -NoEnter
                     }
                     "quip1"{
-                        Invoke-GameSelect -MenuTarget 3 -CheckPack "pack2" -Wait 7 -Flavor "quip quip potato chip." -NoEnter
+                        Invoke-GameSelect -MenuTarget 3 -CheckPack "pack2" -Wait 8 -Flavor "quip quip potato chip." -NoEnter
                     }
                     "bomb"{
-                        Invoke-GameSelect -MenuTarget 4 -CheckPack "pack2" -Wait 7 -Flavor "someone set up us the bomb."
+                        Invoke-GameSelect -MenuTarget 4 -CheckPack "pack2" -Wait 8 -Flavor "someone set up us the bomb."
                     }
                     #Pack 3
                     "quip2"{
-                        Invoke-GameSelect -MenuTarget 0 -CheckPack "pack3" -Wait 7 -Flavor "quip it good."
+                        Invoke-GameSelect -MenuTarget 0 -CheckPack "pack3" -Wait 8 -Flavor "quip it good."
                     }
                     "murder1"{
-                        Invoke-GameSelect -MenuTarget 1 -CheckPack "pack3" -Wait 7 -Flavor "stabby stabby!"
+                        Invoke-GameSelect -MenuTarget 1 -CheckPack "pack3" -Wait 8 -Flavor "stabby stabby!"
                     }
                     "guess"{
-                        Invoke-GameSelect -MenuTarget 2 -CheckPack "pack3" -Wait 7 -Flavor "deception and detection."
+                        Invoke-GameSelect -MenuTarget 2 -CheckPack "pack3" -Wait 8 -Flavor "deception and detection."
                     }
                     "fake"{
-                        Invoke-GameSelect -MenuTarget 3 -CheckPack "pack3" -Wait 7 -Flavor "fake it till ya make it."
+                        Invoke-GameSelect -MenuTarget 3 -CheckPack "pack3" -Wait 8 -Flavor "fake it till ya make it."
                     }
                     "ko"{
-                        Invoke-GameSelect -MenuTarget 4 -CheckPack "pack3" -Wait 7 -Flavor "that's gonna be about Tee Fiddy."
+                        Invoke-GameSelect -MenuTarget 4 -CheckPack "pack3" -Wait 8 -Flavor "that's gonna be about Tee Fiddy."
                     }
                     #Pack 4
                     "fib3"{
-                        Invoke-GameSelect -MenuTarget 0 -CheckPack "pack4" -Wait 7 -Flavor "you filthy liars!"
+                        Invoke-GameSelect -MenuTarget 0 -CheckPack "pack4" -Wait 8 -Flavor "you filthy liars!"
                     }
                     "fib3alt"{
-                        Invoke-GameSelect -MenuTarget 0 -CheckPack "pack4" -Wait 7 -Flavor "have fun!" -NoEnter
+                        Invoke-GameSelect -MenuTarget 0 -CheckPack "pack4" -Wait 8 -Flavor "have fun!" -NoEnter
                         Invoke-KeyAtTarget -CMD "{DOWN}" -Target $Script:State.currentGameString
                         Invoke-KeyAtTarget -CMD "{ENTER}" -Target $Script:State.currentGameString
                     }
                     "survive"{
-                        Invoke-GameSelect -MenuTarget 1 -CheckPack "pack4" -Wait 7 -Flavor "try to make it back in one piece!"
+                        Invoke-GameSelect -MenuTarget 1 -CheckPack "pack4" -Wait 8 -Flavor "try to make it back in one piece!"
                     }
                     "monster"{
-                        Invoke-GameSelect -MenuTarget 2 -CheckPack "pack4" -Wait 7 -Flavor "let's hope you can finally find love!"
+                        Invoke-GameSelect -MenuTarget 2 -CheckPack "pack4" -Wait 8 -Flavor "let's hope you can finally find love!"
                     }
                     "bracket"{
                         Invoke-GameSelect -MenuTarget 3 -CheckPack "pack4" -Wait 8 -Flavor "prepare for battle!"
                     }
                     "doodle"{
-                        Invoke-GameSelect -MenuTarget 4 -CheckPack "pack4" -Wait 7 -Flavor "do your dooty!"
+                        Invoke-GameSelect -MenuTarget 4 -CheckPack "pack4" -Wait 8 -Flavor "do your dooty!"
                     }
                     #Pack 5
                     "jack2"{
-                        Invoke-GameSelect -MenuTarget 0 -CheckPack "pack5" -Wait 7 -Flavor "you don't know what you don't know."
+                        Invoke-GameSelect -MenuTarget 0 -CheckPack "pack5" -Wait 9 -Flavor "you don't know what you don't know."
                     }
                     "split"{
-                        Invoke-GameSelect -MenuTarget 1 -CheckPack "pack5" -Wait 7 -Flavor "theoretically speaking...of course."
+                        Invoke-GameSelect -MenuTarget 1 -CheckPack "pack5" -Wait 9 -Flavor "theoretically speaking...of course."
                     }
                     "mad"{
-                        Invoke-GameSelect -MenuTarget 2 -CheckPack "pack5" -Wait 7 -Flavor "MadTV had nothing on this game."
+                        Invoke-GameSelect -MenuTarget 2 -CheckPack "pack5" -Wait 9 -Flavor "MadTV had nothing on this game."
                     }
                     "zeep"{
-                        Invoke-GameSelect -MenuTarget 3 -CheckPack "pack5" -Wait 7 -Flavor "zeep zeep!"
+                        Invoke-GameSelect -MenuTarget 3 -CheckPack "pack5" -Wait 9 -Flavor "zeep zeep!"
                     }
                     "stupid"{
-                        Invoke-GameSelect -MenuTarget 4 -CheckPack "pack5" -Wait 7 -Flavor "can you fool the patent clerks?"
+                        Invoke-GameSelect -MenuTarget 4 -CheckPack "pack5" -Wait 9 -Flavor "can you fool the patent clerks?"
                     }
                     #Pack 6
                     "Murder2"{
-                        Invoke-GameSelect -MenuTarget 0 -CheckPack "pack6" -Wait 7 -Flavor "prepare to die..."
+                        Invoke-GameSelect -MenuTarget 0 -CheckPack "pack6" -Wait 11 -Flavor "prepare to die..."
                     }
                     "Models"{
-                        Invoke-GameSelect -MenuTarget 1 -CheckPack "pack6" -Wait 7 -Flavor "who do you look up to?"
+                        Invoke-GameSelect -MenuTarget 1 -CheckPack "pack6" -Wait 11 -Flavor "who do you look up to?"
                     }
                     "Boat"{
-                        Invoke-GameSelect -MenuTarget 2 -CheckPack "pack6" -Wait 7 -Flavor "all aboard!"
+                        Invoke-GameSelect -MenuTarget 2 -CheckPack "pack6" -Wait 11 -Flavor "all aboard!"
                     }
                     "Dict"{
-                        Invoke-GameSelect -MenuTarget 3 -CheckPack "pack6" -Wait 7 -Flavor "grab your scholar hats!"
+                        Invoke-GameSelect -MenuTarget 3 -CheckPack "pack6" -Wait 11 -Flavor "grab your scholar hats!"
                     }
                     "Button"{
-                        Invoke-GameSelect -MenuTarget 4 -CheckPack "pack6" -Wait 7 -Flavor "it's time to probe the aliens!"
+                        Invoke-GameSelect -MenuTarget 4 -CheckPack "pack6" -Wait 11 -Flavor "it's time to probe the aliens!"
                     }
                     default {
                         Send-DiscordMessage -Message $($Script:HelperText)
