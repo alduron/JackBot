@@ -31,7 +31,7 @@ $Script:wshell = New-Object -ComObject wscript.shell
 #Formats CMD list to adjust to available games
 function Get-CommandList(){
     #Templates
-    $CommandTemplate = @"
+    $CommandTemplate = @'
 **Available {0} commands are:**
     __**~Controls~**__
     **Stop** - Stops the Jackbox stream
@@ -50,22 +50,22 @@ function Get-CommandList(){
 **Commands must be prefixed with the keyword "{3}"**
 Example usage:
 {4}
-"@
-    $ExampleTemplate = @"
-    ```{0} pack4```
-    ```{0} fib3```
-"@
+'@
+    $ExampleTemplate = @'
+    `{0} pack4`
+`{0} fib3`
+'@
 
-    $GameTemplate = @"
+    $GameTemplate = @'
     **{0}**:
 {1}
-"@
-    $GameLineTemplate = @"
+'@
+    $GameLineTemplate = @'
     **{0}** - {1}
-"@
-    $PackLineTemplate = @"
+'@
+    $PackLineTemplate = @'
     **{0}** - {1}
-"@
+'@
 
     #Logic
     $GamesList = @()
@@ -81,7 +81,7 @@ Example usage:
 
     $Examples = $ExampleTemplate -f $Script:Config.TriggerKey
 
-    $Script:HelperText = $CommandTemplate -f $Script:Config.BotName, ($PacksList | Out-String), ($GamesList | Out-String).TrimEnd(), $Script:Config.TriggerKey, ($Examples | Out-String)
+    $Script:HelperText = $CommandTemplate.TrimEnd() -f $Script:Config.BotName, ($PacksList | Out-String), ($GamesList | Out-String).TrimEnd(), $Script:Config.TriggerKey, ($Examples | Out-String).Trim()
 }
 
 #Sets relations in config file
