@@ -21,5 +21,5 @@ links/*.url
 # Thumbnails
 ._*
 
-# Jackbot
-/Config.JSON
+# AutomationTools
+secrets.json

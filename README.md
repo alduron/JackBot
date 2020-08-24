@@ -20,7 +20,7 @@ Technically it can work with any game that can be interacted with by keyboard co
 
 ## New Features
 
-* **AutomationTools integration** - JackBot now uses automationtools for logging and config management. AutomationTools config features can now be used with the JackBot config seamlessly. You can read more about AutomationTools config features [Here](https://github.com/alduron/automationtools#automationtools)
+* **AutomationTools integration** - JackBot now uses AutomationTools for logging and config management. AutomationTools config features can now be used with the JackBot config seamlessly. You can read more about AutomationTools config features [Here](https://github.com/alduron/automationtools#automationtools)
 * **Command Locking** - Enable command locking either by config or within the bot to ensure the person launching the game has sole control over the bot for X minutes
 * **Dynamic Command List** - JackBot will now detect all games loaded and dynamically create the commands list for users. It supports any combination of Jackbox packs
 * **Configurable Splash Timings** - Exposed Splash Screen timings to the config file in the event that some machines load slower
