@@ -1,6 +1,7 @@
 {
     "BotName":"JackBot",
     "TriggerKey":"!jackbot",
+    "LogName":"JackBotLog",
     "CommandProcessConfirmation":false,
     "CommandLockEnabled":false,
     "LockMinutes":30,

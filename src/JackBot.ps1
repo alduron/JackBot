@@ -1,12 +1,9 @@
-Write-Host "This is the JackBot window. Do not close, I'll hide it later."
-
 $ErrorActionPreference = "SilentlyContinue"
 
 #Bot Root
-$Script:Root = Split-Path -Path $PSScriptRoot -Parent
 
 #File for caching the last Discord message processed. Bad things happen without this
-$Script:MessageFile = "$($Script:Root)\src\MessageCache.txt"
+$Script:MessageFile = "$($Script:Config.JackRoot)\src\MessageCache.txt"
 
 #Script state for handling navigation logic
 $Script:State = [PSCustomObject]@{
@@ -30,6 +27,7 @@ $Script:wshell = New-Object -ComObject wscript.shell
 
 #Formats CMD list to adjust to available games
 function Get-CommandList(){
+    Write-Log -Message "Building command templates" -Type INF -Console -Log
     #Templates
     $CommandTemplate = @'
 **Available {0} commands are:**
@@ -71,6 +69,7 @@ Example usage:
     $GamesList = @()
     $PacksList = @()
     Foreach($Game in $Script:Config.AvailableGames | ?{$_.IsPlayable -eq $true}){
+        Write-Log -Message "Adding subgame list for [$($Game.Name)]" -Type INF -Console -Log
         $SubGameList = @()
         Foreach($SubGame in $Game.SubGames.PSObject.Properties){
             $SubGameList += $GameLineTemplate -f $SubGame.Name,$SubGame.Value,$Game.CommandName
@@ -81,30 +80,29 @@ Example usage:
 
     $Examples = $ExampleTemplate -f $Script:Config.TriggerKey
 
+    Write-Log -Message "Building helper text" -Type INF
     $Script:HelperText = $CommandTemplate.TrimEnd() -f $Script:Config.BotName, ($PacksList | Out-String), ($GamesList | Out-String).TrimEnd(), $Script:Config.TriggerKey, ($Examples | Out-String).Trim()
 }
 
 #Sets relations in config file
-function Get-Config(){
-    if(Test-Path "$($Script:Root)\Config.JSON"){
-        try{
-            $Script:Config  = Get-Content "$($PSScriptRoot | Split-Path -Parent)\Config.JSON" -Raw | ConvertFrom-Json
-            Foreach($Game in $Script:Config.AvailableGames){
-                if(Test-Path "$($Script:Root)\links\$($Game.Link)"){
-                    $Game.IsPlayable = $True
-                    $Game.FullPath = "$($Script:Root)\links\$($Game.Link)"
-                }
+function Update-JackbotSettings(){
+    try{
+        Foreach($Game in $Script:Config.AvailableGames){
+            if(Test-Path "$($Script:Config.JackRoot)\links\$($Game.Link)"){
+                Write-Log -Message "Adding [$($Game.Name)] to playable list" -Type INF -Console -Log
+                $Game.IsPlayable = $True
+                $Game.FullPath = "$($Script:Config.JackRoot)\links\$($Game.Link)"
+            } else {
+                Write-Log -Message "[$($Game.Name)] was not detected" -Type WRN -Console -Log
             }
-            if(!(Test-Path $Script:Config.DiscordLink)){
-                $Script:Config.DiscordLink = "$($Script:Root)\links\$($Script:Config.DiscordLink)"
-            }
-        } catch {
-            Write-Host "There was a problem with the Config file. Please ensure it is proper JSON and retry" -ForegroundColor Red
-            Pause
-            exit
         }
-    } else {
-        Write-Host "Config.JSON is missing from the bot's root directory" -ForegroundColor Red
+        Write-Log -Message "Testing Discord link" -Type INF -Console -Log
+        if(!(Test-Path $Script:Config.DiscordLink)){
+            Write-Log -Message "Config discord link does not exist, assigning defauly link" -Type INF -Console -Log
+            $Script:Config.DiscordLink = "$($Script:Config.JackRoot)\links\$($Script:Config.DiscordLink)"
+        }
+    } catch {
+        $_ | Write-Log -Message "There was a problem with the installation. Please ensure it is proper JSON and retry" -Type ERR -Console
         Pause
         exit
     }
@@ -113,6 +111,7 @@ function Get-Config(){
 
 #Attempts to ensure keypresses find their way to the correct window
 function Invoke-KeyAtTarget ([String]$CMD,[String]$Target,[Switch]$Speedy){
+    Write-Log -Message "Invoking [$CMD] at [$Target]" -Type INF -Console -Log
     $null = $Script:wshell.AppActivate($Target)
     if(!$Speedy){Start-Sleep -Milliseconds 300}else{Start-Sleep -Milliseconds 50}
     $null = $Script:wshell.SendKeys($CMD)
@@ -144,6 +143,7 @@ function Get-NewDiscordMessage(){
 
 #Handles getting the message to the Discord webhook
 function Send-DiscordMessage([String]$Message){
+    Write-Log -Message "Sending discord message" -Type INF -Console -Log
     $Payload = [PSCustomObject]@{
         content = $Message
     }
@@ -153,6 +153,7 @@ function Send-DiscordMessage([String]$Message){
 
 #Processes the user responses. This function contains the pauses and menu manipulation
 function Resolve-MessageInstruction([PSCustomObject]$Messages){
+    Write-Log -Message "New messages detected" -Type INF -Console
     foreach($Message in $Messages){
         if($Message.content -match ("^" + $Script:Config.TriggerKey)){
             $ValidCommand = $false
@@ -164,12 +165,19 @@ function Resolve-MessageInstruction([PSCustomObject]$Messages){
                 $ValidCommand = $true
             }
             if($ValidCommand){
+                Write-Log -Message "Valid command detected" -Type INF -Console
                 $MessageSplit = $Message.content.split(" ")
+                if($null -ne $MessageSplit[1]){
+                    Write-Log -Message "Processing command [$($MessageSplit[1])] from [$($Message.author)]" -Type INF -Console -Log
+                }
+                
                 switch($MessageSplit[1]){
                     "help"{
+                        Write-Log -Message "Returning help text" -Type INF -Console -Log
                         Send-DiscordMessage -Message $Script:HelperText
                     }
                     "stop" {
+                        Write-Log -Message "Stopping JackBot" -Type INF -Console -Log
                         if($Script:State.gameIsStreaming){
                             Set-DiscordStreamToggle
                             Send-DiscordMessage -Message "Powering down $($Script:Config.BotName) services, this will take a few seconds...[SAD BEEP]"
@@ -180,8 +188,9 @@ function Resolve-MessageInstruction([PSCustomObject]$Messages){
                         }
                     }
                     "reset"{
+                        Write-Log -Message "Resetting JackBot" -Type INF -Console -Log
                         Send-DiscordMessage -Message "Attempting to restart services. This could take up to 40 seconds"
-                        Get-Config
+                        Update-JackbotSettings
                         Stop-JackBox
                         Stop-Discord
                         Sleep 5
@@ -191,6 +200,7 @@ function Resolve-MessageInstruction([PSCustomObject]$Messages){
                         Set-DiscordStreamToggle
                     }
                     "gamemenu"{
+                        Write-Log -Message "Returning to game menu" -Type INF -Console -Log
                         if(($Script:State.currentPostition -match "menu")){
                             Send-DiscordMessage -Message "You are already in a menu. If you want to switch games then use `"$($Script:Config.TriggerKey) menu`" and select a different game"
                         } elseif($Script:State.currentPostition -match "app") {
@@ -200,6 +210,7 @@ function Resolve-MessageInstruction([PSCustomObject]$Messages){
                         }
                     }
                     "menu"{
+                        Write-Log -Message "Returning to game menu" -Type INF -Console -Log
                         if(($Script:State.currentPostition -match "app")){
                             Send-DiscordMessage -Message "Heading back to the game menu, you filthy quitter"
                             if($Script:State.currentPack -match "pack1"){
@@ -220,46 +231,58 @@ function Resolve-MessageInstruction([PSCustomObject]$Messages){
                         }
                     }
                     "sendback"{
+                        Write-Log -Message "Returning up one level" -Type INF -Console -Log
                         Invoke-UpOneGameLevel
                     }
                     "sendenter"{
+                        Write-Log -Message "Sending Eenter Key" -Type INF -Console -Log
                         Invoke-KeyAtTarget -CMD "{ENTER}" -Target $Script:State.currentGameString
                     }
                     "sendup"{
+                        Write-Log -Message "Sending Up Key" -Type INF -Console -Log
                         Invoke-KeyAtTarget -CMD "{UP}" -Target $Script:State.currentGameString
                     }
                     "senddown"{
+                        Write-Log -Message "Sending Down Key" -Type INF -Console -Log
                         Invoke-KeyAtTarget -CMD "{DOWN}" -Target $Script:State.currentGameString
                     }
                     "toggle"{
+                        Write-Log -Message "Toggling Stream" -Type INF -Console -Log
                         Send-DiscordMessage -Message "Toggling the Discord stream..."
                         Set-DiscordStreamToggle
                     }
                     "lockmode"{
+                        Write-Log -Message "Toggling lock mode" -Type INF -Console -Log
                         Set-CommandLockToggle
                     }
                     #Pack Selector
                     "pack1"{
+                        Write-Log -Message "Starting Pack 1" -Type INF -Console -Log
                         Start-Pack -JackTarget 1
                         Set-CommandLock -LockRecipient $Message.author
                     }
                     "pack2"{
+                        Write-Log -Message "Starting Pack 2" -Type INF -Console -Log
                         Start-Pack -JackTarget 2
                         Set-CommandLock -LockRecipient $Message.author
                     }
                     "pack3"{
+                        Write-Log -Message "Starting Pack 3" -Type INF -Console -Log
                         Start-Pack -JackTarget 3
                         Set-CommandLock -LockRecipient $Message.author
                     }
                     "pack4"{
+                        Write-Log -Message "Starting Pack 4" -Type INF -Console -Log
                         Start-Pack -JackTarget 4
                         Set-CommandLock -LockRecipient $Message.author
                     }
                     "pack5"{
+                        Write-Log -Message "Starting Pack 5" -Type INF -Console -Log
                         Start-Pack -JackTarget 5
                         Set-CommandLock -LockRecipient $Message.author
                     }
                     "pack6"{
+                        Write-Log -Message "Starting Pack 6" -Type INF -Console -Log
                         Start-Pack -JackTarget 6
                         Set-CommandLock -LockRecipient $Message.author
                     }
@@ -365,6 +388,7 @@ function Resolve-MessageInstruction([PSCustomObject]$Messages){
                         Invoke-GameSelect -MenuTarget 4 -CheckPack "pack6" -Wait 11 -Flavor "it's time to probe the aliens!"
                     }
                     default {
+                        Write-Log -Message "Sending default response" -Type INF -Console -Log
                         Send-DiscordMessage -Message $($Script:HelperText)
                     }
                 }
@@ -375,24 +399,30 @@ function Resolve-MessageInstruction([PSCustomObject]$Messages){
             } else {
                 Send-DiscordMessage -Message "**$($Script:State.lockOwner)** has a command lock for another $(($Script:State.lockLease - (Get-Date)).Minutes) minute(s) and $(($Script:State.lockLease - (Get-Date)).Seconds) second(s)"
             }
+        } else {
+            Write-Log -Message "Ignoring Message" -Type INF -Console -Log
         }
     }
 }
 
 #For handing navigation in the main menu of Jackbox since the last selected game is always the entry position
 function Invoke-MenuStepper([int]$Target){
+    Write-Log -Message "Stepping to menu item [$Target]" -Type INF -Console
     if($Target -gt $Script:State.menuPosition){
         $Number = $Target - $Script:State.menuPosition
+        Write-Log -Message "Stepping down" -Type INF -Console
         for($i=0;$i -lt $Number;$i++){
             Invoke-KeyAtTarget -CMD "{DOWN}" -Target $Script:State.currentGameString
         }
     } elseif($Target -lt $Script:State.menuPosition){
+        Write-Log -Message "Stepping up" -Type INF -Console -Log
         for($i=$Script:State.menuPosition;$i -gt $Target;$i--){
             Invoke-KeyAtTarget -CMD "{UP}" -Target $Script:State.currentGameString
         }
     } elseif($Target -eq $Script:State.menuPosition){
         #Leaving incase I want to add something later
     }
+    
     Invoke-KeyAtTarget -CMD "{ENTER}" -Target $Script:State.currentGameString
     $Script:State.menuPosition = $Target
 }
@@ -416,6 +446,7 @@ function Invoke-GameSelect([int]$MenuTarget,[String]$CheckPack,[int]$Wait,[Strin
     $SubGameName = (($Script:Config.AvailableGames | ?{$_.GameID -eq $Script:State.currentGame}).SubGames.PSObject.Properties | %{$_.Name})[$SubTarget]
     $SubGameString = (($Script:Config.AvailableGames | ?{$_.GameID -eq $Script:State.currentGame}).SubGames.PSObject.Properties | %{$_.Value})[$SubTarget]
     if(($Script:State.currentPack -match $CheckPack) -and !($Script:State.currentPostition -match "app")){
+        Write-Log -Message "Selecting game [$($SubGameName)] with menu target [$MenuTarget]" -Type INF -Console -Log
         Send-DiscordMessage -Message "Heading into $SubGameString, $Flavor"
         Invoke-MenuStepper -Target $MenuTarget
         $Script:State.currentPostition = "$($SubGameName)app"
@@ -430,8 +461,10 @@ function Invoke-GameSelect([int]$MenuTarget,[String]$CheckPack,[int]$Wait,[Strin
 }
 
 function Start-Pack([int]$JackTarget) {
+    Write-Log -Message "Attempting to start [$JackTarget]" -Type INF -Console -Log
     if(Assert-Jackbox -JackTarget $JackTarget){
         if($Script:State.currentGame -eq 0){
+            Write-Log -Message "Current game not detected, updating states and starting services" -Type INF -Console -Log
             Set-JackboxState -JackTarget $JackTarget
             Send-DiscordMessage -Message "Firing up $($Script:Config.BotName) services for $($Script:State.currentGameString). This could take up to 40 seconds...[HAPPY BEEP]"
             Invoke-SafetyWake
@@ -440,6 +473,7 @@ function Start-Pack([int]$JackTarget) {
             Enter-DiscordChannel
             Set-DiscordStreamToggle
         } else {
+            Write-Log -Message "Current game detected, destroying open sessions and relaunching" -Type INF -Console -Log
             Stop-JackBox -WithPrejudice
             Set-JackboxState -JackTarget $JackTarget
             Set-DiscordStreamToggle
@@ -448,6 +482,7 @@ function Start-Pack([int]$JackTarget) {
             Set-DiscordStreamToggle
         }
     } else {
+        Write-Log -Message "[$JackTarget] is not available" -Type INF -Console -Log
         Send-DiscordMessage "Pack1 is not available to stream. Check the config and reload the bot"
     }
 }
@@ -455,6 +490,7 @@ function Start-Pack([int]$JackTarget) {
 #Had to add a wake function since Forms seem to be unresponsive the first few seconds on the VM
 #There's probably a better solution for this but I'm lazy
 function Invoke-SafetyWake(){
+    Write-Log -Message "Invoking a safety wake to avoid key strike issues" -Type INF -Console -Log
     Invoke-KeyAtTarget -CMD "{ }" -Target "explorer"
     Sleep 2
     Invoke-KeyAtTarget -CMD "{ }" -Target "explorer"
@@ -476,10 +512,12 @@ function Invoke-UpOneGameLevel(){
 #Toggles command lock so the bot does not have to be reloaded. This does not set the config
 function Set-CommandLockToggle(){
     if($Script:Config.CommandLockEnabled){
-        $Script:Config.CommandLockEnabled = $false
+        Write-Log -Message "Command lock is currently enabled, setting to disabled state" -Type INF -Console -Log
+        Update-Config -Name "CommandLockEnabled" -Value $false
         Send-DiscordMessage -Message "Command lock has been disabled"
     } else {
-        $Script:Config.CommandLockEnabled = $true
+        Write-Log -Message "Command lock is currently disabled, setting to enabled state" -Type INF -Console -Log
+        Update-Config -Name "CommandLockEnabled" -Value $true
         Send-DiscordMessage -Message "Command lock has been enabled"
     }
 }
@@ -487,6 +525,7 @@ function Set-CommandLockToggle(){
 function Assert-Jackbox([int]$JackTarget){
     $CanRun = $false
     if(($Script:Config.AvailableGames | ?{($_.IsPlayable -eq $true) -and ($_.GameID -eq $JackTarget)}).GameID -eq $JackTarget){
+        Write-Log -Message "[$JackTarget] is available to call" -Type INF -Console -Log
         $CanRun = $true
     }
     return $CanRun
@@ -494,12 +533,15 @@ function Assert-Jackbox([int]$JackTarget){
 
 #Start Jackbox and set state, ensures windows is open. Does not know how to handle updates or popups
 function Start-JackBox([int]$JackTarget){
+    Write-Log -Message "Starting JackBox pack [$JackTarget]" -Type INF -Console -Log
     Set-JackboxState -JackTarget $JackTarget
     if(!$Script:State.gameIsRunning){
+        Write-Log -Message "State suggests game is not running" -Type INF -Console -Log
         Start-Process -FilePath $Script:State.currentPath
         $Attempts = 3
         $Count = 0
         do{
+            Write-Log -Message "Waiting for process to start..." -Type INF -Console -Log
             $CurrentWindows = Get-Process | ?{$_.MainWindowTitle -ne ""} | Select -ExpandProperty MainWindowTitle
             $Count++
             if($Count -eq $Attempts){
@@ -508,6 +550,7 @@ function Start-JackBox([int]$JackTarget){
             }
             Sleep 5
         } while(!($CurrentWindows -contains $Script:State.currentGameString))
+        Write-Log -Message "Process has started" -Type INF -Console -Log
         $Script:State.gameIsRunning = $true
         Sleep ($Script:Config.AvailableGames | ?{($_.GameID -eq $JackTarget)}).SplashTime
         Invoke-KeyAtTarget -CMD "{ENTER}" -Target $Script:State.currentGameString
@@ -516,6 +559,7 @@ function Start-JackBox([int]$JackTarget){
 
 #Resets varying levels of state variable depending on intent
 function Reset-JackboxState([Switch]$Full){
+    Write-Log -Message "Resetting JackBot services" -Type INF -Console -Log
     Remove-CommandLock
     if($Full){
         $Script:State.currentGame = 0
@@ -529,6 +573,7 @@ function Reset-JackboxState([Switch]$Full){
 
 #Hydrates the state conditions for the jackpack
 function Set-JackboxState([int]$JackTarget){
+    Write-Log -Message "Updating current state for JackBox target [$JackTarget]" -Type INF -Console -Log
     $Script:State.currentGameString = $Script:Config.AvailableGames | ?{$_.GameID -eq $JackTarget} | Select -ExpandProperty Name
     $Script:State.currentPath = $Script:Config.AvailableGames | ?{$_.GameID -eq $JackTarget} | Select -ExpandProperty FullPath
     $Script:State.currentGame = $JackTarget
@@ -537,6 +582,7 @@ function Set-JackboxState([int]$JackTarget){
 
 #Stop JackBox and reset state
 function Stop-JackBox([Switch]$WithPrejudice){
+    Write-Log -Message "Stopping JackBox services" -Type INF -Console -Log
     Remove-CommandLock
     Get-Process -Name $Script:State.currentGameString | Stop-Process -Force
     if($WithPrejudice){
@@ -550,9 +596,12 @@ function Stop-JackBox([Switch]$WithPrejudice){
 function Set-DiscordStreamToggle(){
     Invoke-KeyAtTarget -CMD "^%{l}" -Target $Script:Config.DiscordName
     if($Script:State.gameIsRunning){
+        Write-Log -Message "State suggests game is currently running, toggling stream state" -Type INF -Console -Log
         if($Script:State.gameIsStreaming){
+            Write-Log -Message "State suggests stream is currently running, toggling stream state to [$false]" -Type INF -Console -Log
             $Script:State.gameIsStreaming = $false
         } else {
+            Write-Log -Message "State suggests stream is not currently running, toggling stream state to [$true]" -Type INF -Console -Log
             $Script:State.gameIsStreaming = $true
         }
     } 
@@ -561,6 +610,7 @@ function Set-DiscordStreamToggle(){
 #Starts Discord and ensures the window is visible, does not know how to handle updates or popups
 function Start-Discord(){
     if(!$Script:State.discordIsRunning){
+        Write-Log -Message "State suggests Discord is not currently running, attempting to start Discord" -Type INF -Console -Log
         Start-Process -FilePath $Script:Config.DiscordLink
         $Attempts = 3
         $Count = 0
@@ -574,13 +624,17 @@ function Start-Discord(){
             }
             Sleep 10
         } while(!($CurrentWindows -match $Script:Config.DiscordName))
+        Write-Log -Message "Discord is running, updating state" -Type INF -Console -Log
         $Script:State.discordIsRunning = $true
         Sleep 5
+    } else {
+        Write-Log -Message "Discord is running, taking no action" -Type INF -Console -Log
     }
 }
 
 #Stops discord and resets states
 function Stop-Discord(){
+    Write-Log -Message "Discord is force quitting" -Type INF -Console -Log
     Get-Process -Name $Script:Config.DiscordName | Stop-Process -Force
     $Script:State.discordIsRunning = $false
     $Script:State.gameIsStreaming = $false
@@ -590,6 +644,7 @@ function Stop-Discord(){
 #Command for entering the streaming channel
 function Enter-DiscordChannel(){
     if(!$Script:State.discordInChannel){
+        Write-Log -Message "State suggests bot is not in channel, joining [$($Script:Config.DiscordName)]" -Type INF -Console -Log
         Invoke-KeyAtTarget -CMD "^{k}" -Target $Script:Config.DiscordName
         Invoke-KeyAtTarget -CMD "+{1}" -Target $Script:Config.DiscordName
         $String = "$($Script:Config.DiscordChannelName.ToLower()) $($Script:Config.DiscordServerName.ToLower())"
@@ -598,12 +653,15 @@ function Enter-DiscordChannel(){
         }
         Invoke-KeyAtTarget -CMD "{ENTER}" -Target $Script:Config.DiscordName
         $Script:State.discordInChannel = $true
+    } else {
+        Write-Log -Message "State suggests bot is currently in channel, ignoring command" -Type INF -Console -Log
     }
 }
 
 #The only way I can find to exit the channel is by killing Discord. There's probably a better way but I couldn't find it in 10m
 function Exit-DiscordChannel(){
     if($Script:State.discordInChannel){
+        Write-Log -Message "State suggests bot is currently in channel, stopping Discord" -Type INF -Console -Log
         Stop-Discord
         $Script:State.discordIsRunning = $false
         $Script:State.discordInChannel = $false
@@ -614,15 +672,19 @@ function Exit-DiscordChannel(){
 #Sets the current message author as the owner of the command lock
 function Set-CommandLock([String]$LockRecipient){
     if($Script:Config.CommandLockEnabled){
+        Write-Log -Message "State suggests command lock is enabled, granting lock to [$LockRecipient]" -Type INF -Console -Log
         $Script:State.lockOwner = $LockRecipient
         $Script:State.lockLease = (Get-Date).AddMinutes($Script:Config.LockMinutes)
         $Script:State.lockActive = $true
         Send-DiscordMessage -Message "**$($Script:State.lockOwner)** is the host and now has a $($Script:Config.LockMinutes) minute lock on $($Script:Config.BotName) commands"
+    } else {
+        Write-Log -Message "State suggests command lock is disabled, ignoring command" -Type INF -Console -Log
     }
 }
 
 #Resets the command lock vaariables
 function Remove-CommandLock(){
+    Write-Log -Message "Removing command lock from [$($Script:State.lockOwner)]" -Type INF -Console
     if($Script:State.lockActive){
         Send-DiscordMessage -Message "**$($Script:State.lockOwner)**'s lock has expired"
     }
@@ -636,8 +698,10 @@ function Assert-LockOwner([String]$TestUsername){
     if($Script:Config.CommandLockEnabled){
         if($Script:State.lockActive){
             if($TestUsername -eq $Script:State.lockOwner){
+                Write-Log -Message "[$TestUsername] is the current lock owner and the lock is valid" -Type INF -Console -Log
                 return $true
             } else {
+                Write-Log -Message "[$TestUsername] is not the lock owner" -Type INF -Console -Log
                 return $false
             }
         } else {
@@ -650,26 +714,62 @@ function Assert-LockOwner([String]$TestUsername){
 function Test-Lock(){
     if($Script:State.lockActive){
         if((Get-Date) -gt $Script:State.lockLease){
+            #Write-Log -Message "Lock is active but expired" -Type INF -Console
             Remove-CommandLock
+        } else {
+            #Write-Log -Message "Lock is active and still valid" -Type INF -Console
         }
     }
     if($Script:State.lockActive -and !$Script:Config.CommandLockEnabled){
+        #Write-Log -Message "Lock is active but command lock was disabled" -Type INF -Console
         Remove-CommandLock
     }
 }
 
+Function Test-APIConnection(){
+    $MessageCache = Get-Content $Script:MessageFile
+    $GetURL = $Script:Config.DiscordChannelMessages -f $Script:Config.DiscordURL,$Script:Config.DiscordTextChannelID,$MessageCache
+    $Headers = @{Authorization = "Bot $($Script:Config.DiscordToken)"}
+    $response = Invoke-RestMethod -ContentType "Application/JSON" -Uri ($GetURl -replace "\?after=[0-9]{18}","") -Method "GET" -Headers $Headers -UseBasicParsing
+    if($null -ne $response){
+        Write-Log -Message "Discord message queue returned data successfully" -Type CON -Console -Log
+        return $true
+    } else {
+        Write-Log -Message "Discord message queue returned no results, this could be an empty server or a connection problem" -Type ERR -Console -Log
+        Write-Log -Message "Check the following values are correct:" -Type WRN -Console -Log
+        Write-Log -Message "Token [$($Script:Config.DiscordToken)]" -Type WRN -Console -Log
+        Write-Log -Message "URL [$($GetURL -replace '\?after=[0-9]{18}','')]" -Type WRN -Console -Log
+        Write-Log -Message "TextChannelID [$($Script:Config.DiscordTextChannelID)]" -Type WRN -Console -Log
+        return $false
+    }
+}
+
 #Primary bot loop
+$Root = Split-Path -Path $PSScriptRoot -Parent
 $Continue = $true
-Get-Config
+Import-Module "$Root\src\automationtools"
+Update-LogRoot -Folder "$Root\logs"
+$Script:Config = Get-Config
+Write-Log -Message "Adding root level config" -Type INF -Console
+Add-ToolConfig -Path "$Root\Config.json"
+Update-Config -Name "JackRoot" -Value $Root
+Update-JackbotSettings
 Get-CommandList
-do{
-    if($Script:Config.CommandLockEnabled -or $Script:State.lockActive){
-        Test-Lock
-    }
-    $NewMessages = Get-NewDiscordMessage
-    if($null -ne $NewMessages){
-        Resolve-MessageInstruction($NewMessages)
-    }
-    #This is to keep in accordance with the rate limit for Discord API. Do not go lower than 600ms
-    Start-Sleep -Milliseconds 750
-} while ($Continue)
+
+if(Test-APIConnection){
+    Write-Log -Message "JackBot is monitoring Discord chat" -Type INF -Console -Log
+    do{
+        if($Script:Config.CommandLockEnabled -or $Script:State.lockActive){
+            Test-Lock
+        }
+        $NewMessages = Get-NewDiscordMessage
+        if($null -ne $NewMessages){
+            Resolve-MessageInstruction($NewMessages)
+        }
+        #This is to keep in accordance with the rate limit for Discord API. Do not go lower than 600ms
+        Start-Sleep -Milliseconds 750
+    } while ($Continue)
+} else {
+    Write-Log -Message "JackBot could not connect to to Discord to monitor chat" -Type ERR -Console -Log
+    exit
+}
