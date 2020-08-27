@@ -93,7 +93,7 @@ function Update-JackbotSettings(){
         }
         Write-Log -Message "Testing Discord link" -Type INF -Console -Log
         if(!(Test-Path $Script:Config.DiscordLink)){
-            Write-Log -Message "Config discord link does not exist, assigning defauly link" -Type INF -Console -Log
+            Write-Log -Message "Config discord link does not exist, assigning default link" -Type INF -Console -Log
             $Script:Config.DiscordLink = "$($Script:Config.JackRoot)\links\$($Script:Config.DiscordLink)"
         }
     } catch {
