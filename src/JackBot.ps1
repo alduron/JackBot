@@ -1,10 +1,5 @@
 $ErrorActionPreference = "SilentlyContinue"
 
-#Bot Root
-
-#File for caching the last Discord message processed. Bad things happen without this
-$Script:MessageFile = "$($Script:Config.JackRoot)\src\MessageCache.txt"
-
 #Script state for handling navigation logic
 $Script:State = [PSCustomObject]@{
     discordIsRunning = $false
@@ -753,6 +748,8 @@ $Script:Config = Get-Config
 Write-Log -Message "Adding root level config" -Type INF -Console
 Add-ToolConfig -Path "$Root\Config.json"
 Update-Config -Name "JackRoot" -Value $Root
+#File for caching the last Discord message processed. Bad things happen without this
+$Script:MessageFile = "$($Script:Config.JackRoot)\src\MessageCache.txt"
 Update-JackbotSettings
 Get-CommandList
 

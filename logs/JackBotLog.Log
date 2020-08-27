@@ -1,0 +1,109 @@
+WRN | 08/26/20 22:35:41 | [The Jackbox Party Pack] was not detected
+WRN | 08/26/20 22:35:41 | [The Jackbox Party Pack 2] was not detected
+WRN | 08/26/20 22:35:41 | [The Jackbox Party Pack 3] was not detected
+INF | 08/26/20 22:35:41 | Adding [The Jackbox Party Pack 4] to playable list
+WRN | 08/26/20 22:35:42 | [The Jackbox Party Pack 5] was not detected
+INF | 08/26/20 22:35:42 | Adding [The Jackbox Party Pack 6] to playable list
+INF | 08/26/20 22:35:42 | Testing Discord link
+INF | 08/26/20 22:35:42 | Config discord link does not exist, assigning defauly link
+INF | 08/26/20 22:35:42 | Building command templates
+INF | 08/26/20 22:35:42 | Adding subgame list for [The Jackbox Party Pack 4]
+INF | 08/26/20 22:35:42 | Adding subgame list for [The Jackbox Party Pack 6]
+ERR | 08/26/20 22:35:43 | Discord message queue returned no results, this could be an empty server or a connection problem
+WRN | 08/26/20 22:35:43 | Check the following values are correct:
+WRN | 08/26/20 22:35:43 | Token [Njk4OTA5MjgxOTMxNzU1NjIw.XppOWw.KcSunaIOQwCXIHu-E_jQNg9NmMo]
+WRN | 08/26/20 22:35:43 | URL [https://discordapp.com/api/channels/698628143405334553/messages?after=]
+WRN | 08/26/20 22:35:43 | TextChannelID [698628143405334553]
+ERR | 08/26/20 22:35:43 | JackBot could not connect to to Discord to monitor chat
+WRN | 08/26/20 22:36:22 | [The Jackbox Party Pack] was not detected
+WRN | 08/26/20 22:36:22 | [The Jackbox Party Pack 2] was not detected
+WRN | 08/26/20 22:36:22 | [The Jackbox Party Pack 3] was not detected
+INF | 08/26/20 22:36:22 | Adding [The Jackbox Party Pack 4] to playable list
+WRN | 08/26/20 22:36:22 | [The Jackbox Party Pack 5] was not detected
+INF | 08/26/20 22:36:22 | Adding [The Jackbox Party Pack 6] to playable list
+INF | 08/26/20 22:36:22 | Testing Discord link
+INF | 08/26/20 22:36:23 | Config discord link does not exist, assigning defauly link
+INF | 08/26/20 22:36:23 | Building command templates
+INF | 08/26/20 22:36:23 | Adding subgame list for [The Jackbox Party Pack 4]
+INF | 08/26/20 22:36:23 | Adding subgame list for [The Jackbox Party Pack 6]
+WRN | 08/26/20 22:38:48 | [The Jackbox Party Pack] was not detected
+WRN | 08/26/20 22:38:48 | [The Jackbox Party Pack 2] was not detected
+WRN | 08/26/20 22:38:48 | [The Jackbox Party Pack 3] was not detected
+INF | 08/26/20 22:38:48 | Adding [The Jackbox Party Pack 4] to playable list
+WRN | 08/26/20 22:38:48 | [The Jackbox Party Pack 5] was not detected
+INF | 08/26/20 22:38:48 | Adding [The Jackbox Party Pack 6] to playable list
+INF | 08/26/20 22:38:48 | Testing Discord link
+INF | 08/26/20 22:38:48 | Config discord link does not exist, assigning defauly link
+INF | 08/26/20 22:38:49 | Building command templates
+INF | 08/26/20 22:38:49 | Adding subgame list for [The Jackbox Party Pack 4]
+INF | 08/26/20 22:38:49 | Adding subgame list for [The Jackbox Party Pack 6]
+CON | 08/26/20 22:38:49 | Discord message queue returned data successfully
+INF | 08/26/20 22:38:49 | JackBot is monitoring Discord chat
+WRN | 08/26/20 22:39:11 | [The Jackbox Party Pack] was not detected
+WRN | 08/26/20 22:39:12 | [The Jackbox Party Pack 2] was not detected
+WRN | 08/26/20 22:39:12 | [The Jackbox Party Pack 3] was not detected
+INF | 08/26/20 22:39:12 | Adding [The Jackbox Party Pack 4] to playable list
+WRN | 08/26/20 22:39:12 | [The Jackbox Party Pack 5] was not detected
+INF | 08/26/20 22:39:12 | Adding [The Jackbox Party Pack 6] to playable list
+INF | 08/26/20 22:39:12 | Testing Discord link
+INF | 08/26/20 22:39:12 | Config discord link does not exist, assigning defauly link
+INF | 08/26/20 22:39:12 | Building command templates
+INF | 08/26/20 22:39:13 | Adding subgame list for [The Jackbox Party Pack 4]
+INF | 08/26/20 22:39:13 | Adding subgame list for [The Jackbox Party Pack 6]
+ERR | 08/26/20 22:39:13 | Discord message queue returned no results, this could be an empty server or a connection problem
+WRN | 08/26/20 22:39:13 | Check the following values are correct:
+WRN | 08/26/20 22:39:13 | Token [Njk4OTA5MjgxOTMxNzU1NjIw.XppOWw.KcSunaIOQwCXIHu-E_jQNg9NmMo]
+WRN | 08/26/20 22:39:31 | URL [https://discordapp.com/api/channels/698628143405334553/messages?after=]
+WRN | 08/26/20 22:42:50 | [The Jackbox Party Pack] was not detected
+WRN | 08/26/20 22:42:50 | [The Jackbox Party Pack 2] was not detected
+WRN | 08/26/20 22:42:50 | [The Jackbox Party Pack 3] was not detected
+INF | 08/26/20 22:42:50 | Adding [The Jackbox Party Pack 4] to playable list
+WRN | 08/26/20 22:42:50 | [The Jackbox Party Pack 5] was not detected
+INF | 08/26/20 22:42:50 | Adding [The Jackbox Party Pack 6] to playable list
+INF | 08/26/20 22:42:50 | Testing Discord link
+INF | 08/26/20 22:42:51 | Config discord link does not exist, assigning defauly link
+INF | 08/26/20 22:42:51 | Building command templates
+INF | 08/26/20 22:42:51 | Adding subgame list for [The Jackbox Party Pack 4]
+INF | 08/26/20 22:42:51 | Adding subgame list for [The Jackbox Party Pack 6]
+ERR | 08/26/20 22:42:51 | Discord message queue returned no results, this could be an empty server or a connection problem
+WRN | 08/26/20 22:42:51 | Check the following values are correct:
+WRN | 08/26/20 22:42:52 | Token [Njk4OTA5MjgxOTMxNzU1NjIw.XppOWw.KcSunaIOQwCXIHu-E_jQNg9NmMo]
+WRN | 08/26/20 22:44:02 | [The Jackbox Party Pack] was not detected
+WRN | 08/26/20 22:44:02 | [The Jackbox Party Pack 2] was not detected
+WRN | 08/26/20 22:44:02 | [The Jackbox Party Pack 3] was not detected
+INF | 08/26/20 22:44:02 | Adding [The Jackbox Party Pack 4] to playable list
+WRN | 08/26/20 22:44:02 | [The Jackbox Party Pack 5] was not detected
+INF | 08/26/20 22:44:02 | Adding [The Jackbox Party Pack 6] to playable list
+INF | 08/26/20 22:44:02 | Testing Discord link
+INF | 08/26/20 22:44:03 | Config discord link does not exist, assigning defauly link
+INF | 08/26/20 22:44:03 | Building command templates
+INF | 08/26/20 22:44:03 | Adding subgame list for [The Jackbox Party Pack 4]
+INF | 08/26/20 22:44:03 | Adding subgame list for [The Jackbox Party Pack 6]
+CON | 08/26/20 22:44:03 | Discord message queue returned data successfully
+INF | 08/26/20 22:44:03 | JackBot is monitoring Discord chat
+WRN | 08/26/20 22:44:21 | [The Jackbox Party Pack] was not detected
+WRN | 08/26/20 22:44:21 | [The Jackbox Party Pack 2] was not detected
+WRN | 08/26/20 22:44:21 | [The Jackbox Party Pack 3] was not detected
+INF | 08/26/20 22:44:21 | Adding [The Jackbox Party Pack 4] to playable list
+WRN | 08/26/20 22:44:22 | [The Jackbox Party Pack 5] was not detected
+INF | 08/26/20 22:44:22 | Adding [The Jackbox Party Pack 6] to playable list
+INF | 08/26/20 22:44:22 | Testing Discord link
+INF | 08/26/20 22:44:22 | Config discord link does not exist, assigning defauly link
+INF | 08/26/20 22:44:22 | Building command templates
+INF | 08/26/20 22:44:22 | Adding subgame list for [The Jackbox Party Pack 4]
+INF | 08/26/20 22:44:22 | Adding subgame list for [The Jackbox Party Pack 6]
+CON | 08/26/20 22:44:23 | Discord message queue returned data successfully
+INF | 08/26/20 22:44:23 | JackBot is monitoring Discord chat
+WRN | 08/26/20 22:44:43 | [The Jackbox Party Pack] was not detected
+WRN | 08/26/20 22:44:43 | [The Jackbox Party Pack 2] was not detected
+WRN | 08/26/20 22:44:43 | [The Jackbox Party Pack 3] was not detected
+INF | 08/26/20 22:44:43 | Adding [The Jackbox Party Pack 4] to playable list
+WRN | 08/26/20 22:44:44 | [The Jackbox Party Pack 5] was not detected
+INF | 08/26/20 22:44:44 | Adding [The Jackbox Party Pack 6] to playable list
+INF | 08/26/20 22:44:44 | Testing Discord link
+INF | 08/26/20 22:44:44 | Config discord link does not exist, assigning defauly link
+INF | 08/26/20 22:44:44 | Building command templates
+INF | 08/26/20 22:44:44 | Adding subgame list for [The Jackbox Party Pack 4]
+INF | 08/26/20 22:44:44 | Adding subgame list for [The Jackbox Party Pack 6]
+CON | 08/26/20 22:44:45 | Discord message queue returned data successfully
+INF | 08/26/20 22:44:45 | JackBot is monitoring Discord chat
