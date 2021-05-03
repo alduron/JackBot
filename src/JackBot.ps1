@@ -27,17 +27,16 @@ function Get-CommandList(){
     $CommandTemplate = @'
 **Available {0} commands are:**
     __**~Controls~**__
-    **Stop** - Stops the Jackbox stream
+    **Stop** - Stops the stream
     **Reset** - Restarts the stream
-    **Menu** - Take you back to the Jackbox menu
-    **Toggle** - Toggle the Discord stream
-    **LockMode** - Toggles the command lock feature
-
+    **Menu** - Take you back to the menu
+    **Toggle** - Toggle the  stream
+    
     __**~Available Packs~**__
-    *You must call a pack before you can enter a game, calling another pack will cancel the current game and load the new pack*
+    *Pick a Pack to Play*
 {1}
     __**~Available Game~**__
-    *These can only be called form the main menu of the the corresponding pack*
+    *Call One of these after opening a pack*
 {2}
 
 **Commands must be prefixed with the keyword "{3}"**
@@ -82,6 +81,7 @@ Example usage:
 #Sets relations in config file
 function Update-JackbotSettings(){
     try{
+        # Write-Log $Script:AvailableGames
         Foreach($Game in $Script:Config.AvailableGames){
             if(Test-Path "$($Script:Config.JackRoot)\links\$($Game.Link)"){
                 Write-Log -Message "Adding [$($Game.Name)] to playable list" -Type INF -Console -Log
@@ -144,6 +144,7 @@ function Send-DiscordMessage([String]$Message){
     }
     #Keep response incase I need to do something with it later
     $response = Invoke-RestMethod -ContentType "Application/JSON" -Uri $Script:Config.DiscordHook -Method "POST" -Body ($Payload | ConvertTo-Json) -UseBasicParsing
+    Write-Log -Message ($Payload | ConvertTo-Json) -Type INF -Console -Log
 }
 
 #Processes the user responses. This function contains the pauses and menu manipulation
@@ -281,6 +282,11 @@ function Resolve-MessageInstruction([PSCustomObject]$Messages){
                         Start-Pack -JackTarget 6
                         Set-CommandLock -LockRecipient $Message.author
                     }
+                    "pack7"{
+                        Write-Log -Message "Starting Pack 7" -Type INF -Console -Log
+                        Start-Pack -JackTarget 7
+                        Set-CommandLock -LockRecipient $Message.author
+                    }
                     #Pack 1
                     "jack1"{
                         Invoke-GameSelect -MenuTarget 0 -CheckPack "pack1" -Wait 8 -Flavor "what do you know anyway?" -NoEnter
@@ -381,6 +387,22 @@ function Resolve-MessageInstruction([PSCustomObject]$Messages){
                     }
                     "Button"{
                         Invoke-GameSelect -MenuTarget 4 -CheckPack "pack6" -Wait 11 -Flavor "it's time to probe the aliens!"
+                    }
+                    #Pack 7
+                    "blather"{
+                        Invoke-GameSelect -MenuTarget 5 -CheckPack "pack7" -Wait 9 -Flavor "Blathering Blatherskyte!"
+                    }
+                    "quip3"{
+                        Invoke-GameSelect -MenuTarget 0 -CheckPack "pack7" -Wait 9 -Flavor "Don't even quip bro!"
+                    }
+                    "devil"{
+                        Invoke-GameSelect -MenuTarget 1 -CheckPack "pack7" -Wait 9 -Flavor "Tell The Devil what you really want..."
+                    }
+                    "champ"{
+                        Invoke-GameSelect -MenuTarget 2 -CheckPack "pack7" -Wait 9 -Flavor "You the Chump, I mean Champ!"
+                    }
+                    "talk"{
+                        Invoke-GameSelect -MenuTarget 3 -CheckPack "pack7" -Wait 9 -Flavor "Here's some points, start talking"
                     }
                     default {
                         Write-Log -Message "Sending default response" -Type INF -Console -Log
@@ -642,7 +664,7 @@ function Enter-DiscordChannel(){
         Write-Log -Message "State suggests bot is not in channel, joining [$($Script:Config.DiscordName)]" -Type INF -Console -Log
         Invoke-KeyAtTarget -CMD "^{k}" -Target $Script:Config.DiscordName
         Invoke-KeyAtTarget -CMD "+{1}" -Target $Script:Config.DiscordName
-        $String = "$($Script:Config.DiscordChannelName.ToLower()) $($Script:Config.DiscordServerName.ToLower())"
+        $String = "$($Script:Config.DiscordChannelName.ToLower())"
         foreach($Letter in $String.ToCharArray()){
             Invoke-KeyAtTarget -CMD "{$Letter}" -Target $Script:Config.DiscordName -Speedy
         }
