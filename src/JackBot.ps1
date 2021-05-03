@@ -214,9 +214,12 @@ function Resolve-MessageInstruction([PSCustomObject]$Messages){
                                 $Script:State.currentPostition = "menu"
                             } else {
                                 Invoke-UpOneGameLevel
-                            $Script:State.currentPostition = "gamemenu"
-                            Invoke-UpOneGameLevel
-                            $Script:State.currentPostition = "menu"
+                                $Script:State.currentPostition = "gamemenu"
+                                Invoke-UpOneGameLevel
+                                $Script:State.currentPostition = "menu"
+                                if($Script:State.currentPack -match "pack7"){
+                                    $Script:State.menuPosition = 0
+                                }
                             }
                         } elseif($Script:State.currentPostition -match "game") {
                             Send-DiscordMessage -Message "Heading back to the game menu, you filthy quitter"
@@ -389,9 +392,6 @@ function Resolve-MessageInstruction([PSCustomObject]$Messages){
                         Invoke-GameSelect -MenuTarget 4 -CheckPack "pack6" -Wait 11 -Flavor "it's time to probe the aliens!"
                     }
                     #Pack 7
-                    "blather"{
-                        Invoke-GameSelect -MenuTarget 5 -CheckPack "pack7" -Wait 9 -Flavor "Blathering Blatherskyte!"
-                    }
                     "quip3"{
                         Invoke-GameSelect -MenuTarget 0 -CheckPack "pack7" -Wait 9 -Flavor "Don't even quip bro!"
                     }
@@ -403,6 +403,9 @@ function Resolve-MessageInstruction([PSCustomObject]$Messages){
                     }
                     "talk"{
                         Invoke-GameSelect -MenuTarget 3 -CheckPack "pack7" -Wait 9 -Flavor "Here's some points, start talking"
+                    }
+                    "blather"{
+                        Invoke-GameSelect -MenuTarget 4 -CheckPack "pack7" -Wait 9 -Flavor "Blathering Blatherskyte!"
                     }
                     default {
                         Write-Log -Message "Sending default response" -Type INF -Console -Log
