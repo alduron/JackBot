@@ -1,6 +1,6 @@
 # JackBot
 
-A Discord bot for hosting all 6 of the Jackbox Party pack games
+A Discord bot for hosting all 7 of the Jackbox Party pack games
 
 ## Details
 
