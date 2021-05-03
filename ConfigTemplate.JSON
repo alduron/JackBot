@@ -111,6 +111,22 @@
                 "Dict":"Dictionarium",
                 "Button":"Push The Button"
             }
+        },
+        {
+            "GameID": 7,
+            "CommandName":"Pack7",
+            "IsPlayable":false,
+            "Name":"The Jackbox Party Pack 7",
+            "Link":"The Jackbox Party Pack 7.url",
+            "FullPath":"",
+            "SplashTime": 10,
+            "SubGames":{
+                "Quip3":"Quiplash 3",
+                "Devil":"The Devil and the Details",
+                "Champ":"Champd Up",
+                "Talk":"Talking Points",
+                "Blather":"Blather Round"
+            }
         }
     ]
 }
