@@ -554,26 +554,29 @@ function Assert-Jackbox([int]$JackTarget){
 #Start Jackbox and set state, ensures windows is open. Does not know how to handle updates or popups
 function Start-JackBox([int]$JackTarget){
     Write-Log -Message "Starting JackBox pack [$JackTarget]" -Type INF -Console -Log
-    Set-JackboxState -JackTarget $JackTarget
-    if(!$Script:State.gameIsRunning){
-        Write-Log -Message "State suggests game is not running" -Type INF -Console -Log
-        Start-Process -FilePath $Script:State.currentPath
-        $Attempts = 3
-        $Count = 0
-        do{
-            Write-Log -Message "Waiting for process to start..." -Type INF -Console -Log
-            $CurrentWindows = Get-Process | ?{$_.MainWindowTitle -ne ""} | Select -ExpandProperty MainWindowTitle
-            $Count++
-            if($Count -eq $Attempts){
-                Start-Process -FilePath $Script:State.currentPath
-                $Count = 0
-            }
-            Sleep 5
-        } while(!($CurrentWindows -contains $Script:State.currentGameString))
-        Write-Log -Message "Process has started" -Type INF -Console -Log
-        $Script:State.gameIsRunning = $true
-        Sleep ($Script:Config.AvailableGames | ?{($_.GameID -eq $JackTarget)}).SplashTime
-        Invoke-KeyAtTarget -CMD "{ENTER}" -Target $Script:State.currentGameString
+    #Alduron Issue #7 - Suggestion from pseud0 - Check to ensure JackTarget is not equal to 0 to prevent a loop
+    if(!$JackTarget -eq 0){
+        Set-JackboxState -JackTarget $JackTarget
+        if(!$Script:State.gameIsRunning){
+            Write-Log -Message "State suggests game is not running" -Type INF -Console -Log
+            Start-Process -FilePath $Script:State.currentPath
+            $Attempts = 3
+            $Count = 0
+            do{
+                Write-Log -Message "Waiting for process to start..." -Type INF -Console -Log
+                $CurrentWindows = Get-Process | ?{$_.MainWindowTitle -ne ""} | Select -ExpandProperty MainWindowTitle
+                $Count++
+                if($Count -eq $Attempts){
+                    Start-Process -FilePath $Script:State.currentPath
+                    $Count = 0
+                }
+                Sleep 5
+            } while(!($CurrentWindows -contains $Script:State.currentGameString))
+            Write-Log -Message "Process has started" -Type INF -Console -Log
+            $Script:State.gameIsRunning = $true
+            Sleep ($Script:Config.AvailableGames | ?{($_.GameID -eq $JackTarget)}).SplashTime
+            Invoke-KeyAtTarget -CMD "{ENTER}" -Target $Script:State.currentGameString
+        }
     }
 }
 
