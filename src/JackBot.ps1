@@ -665,8 +665,9 @@ function Stop-Discord(){
 function Enter-DiscordChannel(){
     if(!$Script:State.discordInChannel){
         Write-Log -Message "State suggests bot is not in channel, joining [$($Script:Config.DiscordName)]" -Type INF -Console -Log
-        Invoke-KeyAtTarget -CMD "^{k}" -Target $Script:Config.DiscordName
-        Invoke-KeyAtTarget -CMD "+{1}" -Target $Script:Config.DiscordName
+        #Alduron Repo Issue #6 - changes suggested by pseudo0 - Inconsistent Success using SendKeys fix
+        Invoke-KeyAtTarget -CMD "(^k)+(^)" -Target $Script:Config.DiscordName
+        Invoke-KeyAtTarget -CMD "(+1)+(+)" -Target $Script:Config.DiscordName
         $String = "$($Script:Config.DiscordChannelName.ToLower())"
         foreach($Letter in $String.ToCharArray()){
             Invoke-KeyAtTarget -CMD "{$Letter}" -Target $Script:Config.DiscordName -Speedy
