@@ -191,9 +191,11 @@ function Resolve-MessageInstruction([PSCustomObject]$Messages){
                         Stop-Discord
                         Sleep 5
                         Start-Discord
-                        Start-JackBox -JackTarget $Script:State.currentGame
-                        Enter-DiscordChannel
-                        Set-DiscordStreamToggle
+                        if(!$Script:State.currentGame -eq 0){
+                            Start-JackBox -JackTarget $Script:State.currentGame
+                            Enter-DiscordChannel
+                            Set-DiscordStreamToggle
+                        }
                     }
                     "gamemenu"{
                         Write-Log -Message "Returning to game menu" -Type INF -Console -Log
