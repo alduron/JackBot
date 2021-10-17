@@ -26,8 +26,8 @@
             "SubGames":{
                 "Jack1":"You Don't Know Jack 2015",
                 "Fib1":"Fibbage XL",
-		"Lie":"Lie Swatter",
-		"Spud":"Word Spud",
+		        "Lie":"Lie Swatter",
+		        "Spud":"Word Spud",
                 "Draw":"Drawful"
             }
         },
@@ -126,6 +126,22 @@
                 "Champ":"Champd Up",
                 "Talk":"Talking Points",
                 "Blather":"Blather Round"
+            }
+        },
+        {
+            "GameID": 8,
+            "CommandName":"Pack8",
+            "IsPlayable":false,
+            "Name":"The Jackbox Party Pack 8",
+            "Link":"The Jackbox Party Pack 8.url",
+            "FullPath":"",
+            "SplashTime": 10,
+            "SubGames":{
+                "DrawA":"Drawful Animate",
+                "Wheel":"Wheel of Enormous Proportions",
+                "Job":"Job Job",
+                "Poll":"Poll Mine",
+                "Weapon":"Weapons Drawn" 
             }
         }
     ]

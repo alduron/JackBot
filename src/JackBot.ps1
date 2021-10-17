@@ -203,8 +203,13 @@ function Resolve-MessageInstruction([PSCustomObject]$Messages){
                             Send-DiscordMessage -Message "You are already in a menu. If you want to switch games then use `"$($Script:Config.TriggerKey) menu`" and select a different game"
                         } elseif($Script:State.currentPostition -match "app") {
                             Send-DiscordMessage -Message "Heading back to the game menu, you filthy quitter"
-                            Invoke-UpOneGameLevel
-                            $Script:State.currentPostition = "gamemenu"
+                            if($Script:State.currentPack -match "pack8"){
+                                Invoke-ReturnMenuSelector -TargetLocation "game"
+                                $Script:State.currentPostition = "gamemenu"
+                            } else {
+                                Invoke-UpOneGameLevel
+                                $Script:State.currentPostition = "gamemenu"
+                            }
                         }
                     }
                     "menu"{
@@ -215,12 +220,25 @@ function Resolve-MessageInstruction([PSCustomObject]$Messages){
                                 Invoke-UpOneGameLevel
                                 $Script:State.currentPostition = "menu"
                             } else {
-                                Invoke-UpOneGameLevel
-                                $Script:State.currentPostition = "gamemenu"
-                                Invoke-UpOneGameLevel
-                                $Script:State.currentPostition = "menu"
-                                if($Script:State.currentPack -match "pack7"){
+                                if($Script:State.currentPack -match "pack8"){
+                                    Invoke-ReturnMenuSelector -TargetLocation "main"
+                                    $Script:State.currentPostition = "menu"
                                     $Script:State.menuPosition = 0
+                                } else {
+                                    Invoke-UpOneGameLevel
+                                    if($Script:State.currentPack -match "pack2"){
+                                        if($Script:State.currentPostition -match "Bombapp"){
+                                            $Script:State.currentPostition = "gamemenu"
+                                            Invoke-UpOneGameLevel
+                                        }
+                                    } else {
+                                        $Script:State.currentPostition = "gamemenu"
+                                        Invoke-UpOneGameLevel
+                                    }
+                                    $Script:State.currentPostition = "menu"
+                                    if($Script:State.currentPack -match "pack7"){
+                                        $Script:State.menuPosition = 0
+                                    }
                                 }
                             }
                         } elseif($Script:State.currentPostition -match "game") {
@@ -290,6 +308,11 @@ function Resolve-MessageInstruction([PSCustomObject]$Messages){
                     "pack7"{
                         Write-Log -Message "Starting Pack 7" -Type INF -Console -Log
                         Start-Pack -JackTarget 7
+                        Set-CommandLock -LockRecipient $Message.author
+                    }
+                    "pack8"{
+                        Write-Log -Message "Starting Pack 8" -Type INF -Console -Log
+                        Start-Pack -JackTarget 8
                         Set-CommandLock -LockRecipient $Message.author
                     }
                     #Pack 1
@@ -408,6 +431,22 @@ function Resolve-MessageInstruction([PSCustomObject]$Messages){
                     }
                     "blather"{
                         Invoke-GameSelect -MenuTarget 4 -CheckPack "pack7" -Wait 9 -Flavor "Blathering Blatherskyte!"
+                    }
+                    #Pack 8
+                    "drawa"{
+                        Invoke-GameSelect -MenuTarget 0 -CheckPack "pack8" -Wait 10 -Flavor "They're alive!!"
+                    }
+                    "wheel"{
+                        Invoke-GameSelect -MenuTarget 1 -CheckPack "pack8" -Wait 10 -Flavor "Round and round we go!"
+                    }
+                    "job"{
+                        Invoke-GameSelect -MenuTarget 2 -CheckPack "pack8" -Wait 10 -Flavor "You should only play this between 9 and 5"
+                    }
+                    "poll"{
+                        Invoke-GameSelect -MenuTarget 3 -CheckPack "pack8" -Wait 10 -Flavor "The only poll you want to be on!"
+                    }
+                    "weapon"{
+                        Invoke-GameSelect -MenuTarget 4 -CheckPack "pack8" -Wait 11 -Flavor "Ready? Aim. Fire!"
                     }
                     default {
                         Write-Log -Message "Sending default response" -Type INF -Console -Log
@@ -529,6 +568,34 @@ function Invoke-UpOneGameLevel(){
     Sleep 2
     Invoke-KeyAtTarget -CMD "{ENTER}" -Target $Script:State.currentGameString
     Sleep 3
+}
+
+function Invoke-ReturnMenuSelector($TargetLocation="game"){
+    switch($TargetLocation){
+        "game"{
+            Invoke-KeyAtTarget -CMD "{ESC}" -Target $Script:State.currentGameString
+            Sleep 1
+            Invoke-KeyAtTarget -CMD "{DOWN}" -Target $Script:State.currentGameString
+            Sleep 1
+            Invoke-KeyAtTarget -CMD "{ENTER}" -Target $Script:State.currentGameString
+            Sleep 1
+            Invoke-KeyAtTarget -CMD "{ENTER}" -Target $Script:State.currentGameString
+            Sleep 2
+        }
+        "main"{
+            Invoke-KeyAtTarget -CMD "{ESC}" -Target $Script:State.currentGameString
+            Sleep 1
+            Invoke-KeyAtTarget -CMD "{DOWN}" -Target $Script:State.currentGameString
+            Sleep 1
+            Invoke-KeyAtTarget -CMD "{DOWN}" -Target $Script:State.currentGameString
+            Sleep 1
+            Invoke-KeyAtTarget -CMD "{ENTER}" -Target $Script:State.currentGameString
+            Sleep 1
+            Invoke-KeyAtTarget -CMD "{ENTER}" -Target $Script:State.currentGameString
+            Sleep 2
+        }
+    }
+    
 }
 
 #Toggles command lock so the bot does not have to be reloaded. This does not set the config
