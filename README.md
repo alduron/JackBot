@@ -125,9 +125,9 @@ You will need to install and log into the following items
 * Log into the Steam account you want the bot to run under. Remember to check Remember Password
 * Log into the Discord account you want the bot to stream from. Discord will stay logged in.
 * Join the streaming account to the Discord server it will be streaming in.
-* **IMPORTANT: In Discord, as the streaming account, go to ```Settings``` > ```Keybinds```. You MUST add a keybinding for ```Toggle Go Live Streaming``` and set the keybind to ```CTRL + ALT + L``` or the stream will never activate.**
+* **IMPORTANT: In Discord, as the streaming account, go to ```Settings``` > ```Keybinds```. You MUST add a keybinding for ```Toggle Screen Share``` and set the keybind to ```CTRL + ALT + L``` or the stream will never activate.**
 
-![KeyBind](https://user-images.githubusercontent.com/6700545/79265875-65e7c300-7e5c-11ea-87ca-387ed55831c3.png)
+![KeyBind](https://user-images.githubusercontent.com/6700545/138333658-d72a912d-544a-488f-b2c6-beedb1861da6.png)
 
 ## Configuring the bot
 
@@ -135,16 +135,20 @@ Once all of the above items are in line you should be ready to configure and run
 
 1. Download the files and unpack them to wherever you'd like the bot to run from. I've added path agnostic bat files so the location should not matter.
 2. Once downloaded copy ```ConfigTemplate.JSON```, and rename it to ```Config.JSON```. 
-Example: ```555555555555555555```
 3. Update ```DiscordChannelName``` with the name of the channel the bot will be streaming to.
+
 Example: ```general```
 4. Update the ```DiscordServerName``` with the name of the Discord Server the bot will be streaming to.
+
 Example: ```GameHost```
 5. Update the ```DiscordTextChannelID``` with the ```DiscordTextChannelID``` we gathered earlier.
+
 Example: ```555555555555555555```
 6. Update the ```DiscordToken``` with the ```DiscordToken``` we gathered earlier.
+
 Example: ```LKAJSHDLJAS_lakjshdliASD_olkjbsdlkhjASDlkjasbdjhGLKJ.DHblkasjd```
 7. Update the ```DiscordHook``` with the ```DiscordHook``` we gathered earlier.
+
 Example: ```https://discordapp.com/api/webhooks/555555555555555555/kljhasd098uasDPOIASD897asiudhkjhbasd0AS&d9*ASYdijbsad```
 8. Place the desktop link created by Steam (```The Jackbox Party Pack 4.url```) for each Jackbox game into the ```JackBot\links``` folder
 9. Place the shortcut to Discord (named ```Discord.lnk```) inside the ```JackBot\links``` folder
