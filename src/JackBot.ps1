@@ -82,9 +82,11 @@ Example usage:
 function Update-JackbotSettings(){
     try{
         # Write-Log $Script:AvailableGames
+        $TotalFailure = $True
         Foreach($Game in $Script:Config.AvailableGames){
             $GameLink = "{0}\links\{1}" -f $Script:Config.JackRoot,$Game.Link
             if(Test-Path $GameLink){
+                $TotalFailure = $False
                 Write-Log -Message "Adding [$($Game.Name)] to playable list" -Type INF -Console -Log
                 $Game.IsPlayable = $True
                 $Game.FullPath = $GameLink
@@ -98,6 +100,11 @@ function Update-JackbotSettings(){
         if(!(Test-Path $Script:Config.DiscordLink)){
             Write-Log -Message "Config discord link does not exist, assigning default link" -Type INF -Console -Log
             $Script:Config.DiscordLink = $DiscordLink
+        }
+        if($TotalFailure){
+            $LinksFolder = "{0}\links" -f $Script:Config.JackRoot
+            $Items = Get-ChildItem $LinksFolder | Select-Object -ExpandProperty FullName
+            Write-Log -Message "The links detected were [$($Items -join ", ")]" -Type INF -Console -Log
         }
     } catch {
         $_ | Write-Log -Message "There was a problem with the installation. Please ensure it is proper JSON and retry" -Type ERR -Console
