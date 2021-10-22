@@ -83,18 +83,21 @@ function Update-JackbotSettings(){
     try{
         # Write-Log $Script:AvailableGames
         Foreach($Game in $Script:Config.AvailableGames){
-            if(Test-Path "$($Script:Config.JackRoot)\links\$($Game.Link)"){
+            $GameLink = "{0}\links\{1}" -f $Script:Config.JackRoot,$Game.Link
+            if(Test-Path $GameLink){
                 Write-Log -Message "Adding [$($Game.Name)] to playable list" -Type INF -Console -Log
                 $Game.IsPlayable = $True
-                $Game.FullPath = "$($Script:Config.JackRoot)\links\$($Game.Link)"
+                $Game.FullPath = $GameLink
             } else {
                 Write-Log -Message "[$($Game.Name)] was not detected" -Type WRN -Console -Log
+                Write-Log -Message "Path tested was $GameLink" -Type WRN -Console -Log
             }
         }
         Write-Log -Message "Testing Discord link" -Type INF -Console -Log
+        $DiscordLink = "{0}\links\{1}" -f $Script:Config.JackRoot,$Script:Config.DiscordLink
         if(!(Test-Path $Script:Config.DiscordLink)){
             Write-Log -Message "Config discord link does not exist, assigning default link" -Type INF -Console -Log
-            $Script:Config.DiscordLink = "$($Script:Config.JackRoot)\links\$($Script:Config.DiscordLink)"
+            $Script:Config.DiscordLink = $DiscordLink
         }
     } catch {
         $_ | Write-Log -Message "There was a problem with the installation. Please ensure it is proper JSON and retry" -Type ERR -Console
