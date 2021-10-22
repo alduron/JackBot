@@ -625,7 +625,7 @@ function Start-JackBox([int]$JackTarget){
     Write-Log -Message "Starting JackBox pack [$JackTarget]" -Type INF -Console -Log
     Set-JackboxState -JackTarget $JackTarget
     if(!$Script:State.gameIsRunning){
-        Write-Log -Message "State suggests game is not running" -Type INF -Console -Log
+        Write-Log -Message "State suggests game is not running, calling [$($Script:State.currentPath)]" -Type INF -Console -Log
         Start-Process -FilePath $Script:State.currentPath
         $Attempts = 3
         $Count = 0
@@ -634,10 +634,12 @@ function Start-JackBox([int]$JackTarget){
             $CurrentWindows = Get-Process | ?{$_.MainWindowTitle -ne ""} | Select -ExpandProperty MainWindowTitle
             $Count++
             if($Count -eq $Attempts){
+                Write-Log -Message "Process is taking longer than expected, attempting to call [$($Script:State.currentPath)] again" -Type INF -Console -Log
+                Write-Log -Message "Current window list consists of [$($CurrentWindows -join ", ")]" -Type INF -Console -Log
                 Start-Process -FilePath $Script:State.currentPath
                 $Count = 0
             }
-            Sleep 5
+            Sleep 6
         } while(!($CurrentWindows -contains $Script:State.currentGameString))
         Write-Log -Message "Process has started" -Type INF -Console -Log
         $Script:State.gameIsRunning = $true
