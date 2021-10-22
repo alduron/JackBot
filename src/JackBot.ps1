@@ -62,7 +62,7 @@ Example usage:
     #Logic
     $GamesList = @()
     $PacksList = @()
-    Foreach($Game in $Script:Config.AvailableGames | ?{$_.IsPlayable -eq $true}){
+    Foreach($Game in $Script:Config.AvailableGames | Where-Object{$_.IsPlayable -eq $true}){
         Write-Log -Message "Adding subgame list for [$($Game.Name)]" -Type INF -Console -Log
         $SubGameList = @()
         Foreach($SubGame in $Game.SubGames.PSObject.Properties){
@@ -121,7 +121,7 @@ function Get-NewDiscordMessage(){
     $Headers = @{Authorization = "Bot $($Script:Config.DiscordToken)"}
 
     $response = Invoke-RestMethod -ContentType "Application/JSON" -Uri $GetURL -Method "GET" -Headers $Headers -UseBasicParsing
-    $response = $response | ?{$_.type -eq 0}
+    $response = $response | Where-Object{$_.type -eq 0}
     foreach($Item in $response){
             if($Item.id -match "\d{18}"){
                 $Item.id | Out-File -FilePath $Script:MessageFile -Force
@@ -504,8 +504,8 @@ function Invoke-GameSelect([int]$MenuTarget,[String]$CheckPack,[int]$Wait,[Strin
             $SubTarget = $MenuTarget
         }
     }
-    $SubGameName = (($Script:Config.AvailableGames | ?{$_.GameID -eq $Script:State.currentGame}).SubGames.PSObject.Properties | %{$_.Name})[$SubTarget]
-    $SubGameString = (($Script:Config.AvailableGames | ?{$_.GameID -eq $Script:State.currentGame}).SubGames.PSObject.Properties | %{$_.Value})[$SubTarget]
+    $SubGameName = (($Script:Config.AvailableGames | Where-Object{$_.GameID -eq $Script:State.currentGame}).SubGames.PSObject.Properties | %{$_.Name})[$SubTarget]
+    $SubGameString = (($Script:Config.AvailableGames | Where-Object{$_.GameID -eq $Script:State.currentGame}).SubGames.PSObject.Properties | %{$_.Value})[$SubTarget]
     if(($Script:State.currentPack -match $CheckPack) -and !($Script:State.currentPostition -match "app")){
         Write-Log -Message "Selecting game [$($SubGameName)] with menu target [$MenuTarget]" -Type INF -Console -Log
         Send-DiscordMessage -Message "Heading into $SubGameString, $Flavor"
@@ -613,7 +613,7 @@ function Set-CommandLockToggle(){
 
 function Assert-Jackbox([int]$JackTarget){
     $CanRun = $false
-    if(($Script:Config.AvailableGames | ?{($_.IsPlayable -eq $true) -and ($_.GameID -eq $JackTarget)}).GameID -eq $JackTarget){
+    if(($Script:Config.AvailableGames | Where-Object{($_.IsPlayable -eq $true) -and ($_.GameID -eq $JackTarget)}).GameID -eq $JackTarget){
         Write-Log -Message "[$JackTarget] is available to call" -Type INF -Console -Log
         $CanRun = $true
     }
@@ -626,12 +626,17 @@ function Start-JackBox([int]$JackTarget){
     Set-JackboxState -JackTarget $JackTarget
     if(!$Script:State.gameIsRunning){
         Write-Log -Message "State suggests game is not running, calling [$($Script:State.currentPath)]" -Type INF -Console -Log
+        if([String]::IsNullOrEmpty($Script:State.currentPath)){
+            Write-Log -Message "Debug-GameIDs: [$($Config.AvailableGames.GameID)]" -Type INF -Console -Log 
+            Write-Log -Message "Debug-AvailableGames: [$($Script:Config.AvailableGames | Where-Object {$_.GameID -eq $JackTarget})]" -Type INF -Console -Log
+            Write-Log -Message "Debug-GameObjectString: [$($Script:Config.AvailableGames | ConvertTo-Json -Depth 100)]" -Type INF -Console -Log
+        }
         Start-Process -FilePath $Script:State.currentPath
         $Attempts = 3
         $Count = 0
         do{
             Write-Log -Message "Waiting for process to start..." -Type INF -Console -Log
-            $CurrentWindows = Get-Process | ?{$_.MainWindowTitle -ne ""} | Select -ExpandProperty MainWindowTitle
+            $CurrentWindows = Get-Process | Where-Object{$_.MainWindowTitle -ne ""} | Select-Object -ExpandProperty MainWindowTitle
             $Count++
             if($Count -eq $Attempts){
                 Write-Log -Message "Process is taking longer than expected, attempting to call [$($Script:State.currentPath)] again" -Type INF -Console -Log
@@ -643,7 +648,7 @@ function Start-JackBox([int]$JackTarget){
         } while(!($CurrentWindows -contains $Script:State.currentGameString))
         Write-Log -Message "Process has started" -Type INF -Console -Log
         $Script:State.gameIsRunning = $true
-        Sleep ($Script:Config.AvailableGames | ?{($_.GameID -eq $JackTarget)}).SplashTime
+        Sleep ($Script:Config.AvailableGames | Where-Object{($_.GameID -eq $JackTarget)}).SplashTime
         Invoke-KeyAtTarget -CMD "{ENTER}" -Target $Script:State.currentGameString
     }
 }
@@ -665,10 +670,10 @@ function Reset-JackboxState([Switch]$Full){
 #Hydrates the state conditions for the jackpack
 function Set-JackboxState([int]$JackTarget){
     Write-Log -Message "Updating current state for JackBox target [$JackTarget]" -Type INF -Console -Log
-    $Script:State.currentGameString = $Script:Config.AvailableGames | ?{$_.GameID -eq $JackTarget} | Select -ExpandProperty Name
-    $Script:State.currentPath = $Script:Config.AvailableGames | ?{$_.GameID -eq $JackTarget} | Select -ExpandProperty FullPath
+    $Script:State.currentGameString = $Script:Config.AvailableGames | Where-Object{$_.GameID -eq $JackTarget} | Select-Object -ExpandProperty Name
+    $Script:State.currentPath = $Script:Config.AvailableGames | Where-Object{$_.GameID -eq $JackTarget} | Select-Object -ExpandProperty FullPath
     $Script:State.currentGame = $JackTarget
-    $Script:State.currentPack = $Script:Config.AvailableGames | ?{$_.GameID -eq $JackTarget} | Select -ExpandProperty CommandName
+    $Script:State.currentPack = $Script:Config.AvailableGames | Where-Object{$_.GameID -eq $JackTarget} | Select-Object -ExpandProperty CommandName
 }
 
 #Stop JackBox and reset state
@@ -706,7 +711,7 @@ function Start-Discord(){
         $Attempts = 3
         $Count = 0
         do{
-            $CurrentWindows = Get-Process | ?{$_.MainWindowTitle -ne ""} | Select -ExpandProperty MainWindowTitle
+            $CurrentWindows = Get-Process | Where-Object{$_.MainWindowTitle -ne ""} | Select-Object -ExpandProperty MainWindowTitle
             $Count++
             if($Count -eq $Attempts){
                 Stop-Discord
