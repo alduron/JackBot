@@ -853,6 +853,7 @@ $Script:Config = Get-Config
 Write-Log -Message "Adding root level config" -Type INF -Console
 Add-ToolConfig -Path "$Root\Config.json"
 Update-Config -Name "JackRoot" -Value $Root
+Write-Log -Message "Current Powershell version is [$($PSVersionTable.PSVersion.ToString())]" -Type INF -Console -Log
 #File for caching the last Discord message processed. Bad things happen without this
 $Script:MessageFile = "$($Script:Config.JackRoot)\src\MessageCache.txt"
 Update-JackbotSettings
