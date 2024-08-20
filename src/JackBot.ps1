@@ -1,4 +1,5 @@
 $ErrorActionPreference = "SilentlyContinue"
+$UserAgent = 'DiscordBot (https://github.com/alduron/JackBot, 1.0.0)'
 
 #Script state for handling navigation logic
 $Script:State = [PSCustomObject]@{
@@ -130,7 +131,7 @@ function Get-NewDiscordMessage(){
     $GetURL = $Script:Config.DiscordChannelMessages -f $Script:Config.DiscordURL,$Script:Config.DiscordTextChannelID,$MessageCache
     $Headers = @{Authorization = "Bot $($Script:Config.DiscordToken)"}
 
-    $response = Invoke-RestMethod -ContentType "Application/JSON" -Uri $GetURL -Method "GET" -Headers $Headers -UseBasicParsing
+    $response = Invoke-RestMethod -ContentType "Application/JSON" -Uri $GetURL -Method "GET" -Headers $Headers -UseBasicParsing -UserAgent $UserAgent
     $response = $response | Where-Object{$_.type -eq 0}
     foreach($Item in $response){
             if($Item.id -match "\d{18}"){
@@ -153,7 +154,7 @@ function Send-DiscordMessage([String]$Message){
         content = $Message
     }
     #Keep response incase I need to do something with it later
-    $response = Invoke-RestMethod -ContentType "Application/JSON" -Uri $Script:Config.DiscordHook -Method "POST" -Body ($Payload | ConvertTo-Json) -UseBasicParsing
+    $response = Invoke-RestMethod -ContentType "Application/JSON" -Uri $Script:Config.DiscordHook -Method "POST" -Body ($Payload | ConvertTo-Json) -UseBasicParsing -UserAgent $UserAgent
     Write-Log -Message ($Payload | ConvertTo-Json) -Type INF -Console -Log
 }
 
@@ -837,7 +838,7 @@ Function Test-APIConnection(){
     $MessageCache = Get-Content $Script:MessageFile
     $GetURL = $Script:Config.DiscordChannelMessages -f $Script:Config.DiscordURL,$Script:Config.DiscordTextChannelID,$MessageCache
     $Headers = @{Authorization = "Bot $($Script:Config.DiscordToken)"}
-    $response = Invoke-RestMethod -ContentType "Application/JSON" -Uri ($GetURl -replace "\?after=[0-9]{18}","") -Method "GET" -Headers $Headers -UseBasicParsing
+    $response = Invoke-RestMethod -ContentType "Application/JSON" -Uri ($GetURl -replace "\?after=[0-9]{18}","") -Method "GET" -Headers $Headers -UseBasicParsing -UserAgent $UserAgent
     if($null -ne $response){
         Write-Log -Message "Discord message queue returned data successfully" -Type CON -Console -Log
         return $true
