@@ -1,3 +1,6 @@
+# NOTE
+This project was originally created for my non-tech family to stay connected during COVID. I'm currently working on a few very demanding projects and do not have time to maintain this bot. I will continue to review and approve Pull Requests for issues if someone wants to keep it updated. I can also add a contributor if anyone is interested.
+
 # JackBot
 
 A Discord bot for hosting all 8 of the Jackbox Party pack games
